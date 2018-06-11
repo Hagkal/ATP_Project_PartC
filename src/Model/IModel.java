@@ -2,8 +2,11 @@ package Model;
 
 import algorithms.mazeGenerators.Maze;
 import algorithms.search.Solution;
+import javafx.beans.Observable;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+
+import java.util.Observer;
 
 public interface IModel {
 
@@ -17,7 +20,7 @@ public interface IModel {
     public Maze getMaze();
 
     // calculating solution
-    public void findSolution(Maze aMaze);
+    public void findSolution();
 
     // returning solution
     public Solution getSolution();
@@ -38,4 +41,9 @@ public interface IModel {
     public void movePlayer(KeyCode step);
 
     /* should add movePlayer method with hover mouse */
+
+
+    public int getPlayerRow();
+
+    public int getPlayerCol();
 }

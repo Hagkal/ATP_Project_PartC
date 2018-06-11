@@ -77,7 +77,7 @@ public class MyModel extends Observable implements IModel {
     }
 
     @Override
-    public void findSolution(Maze aMaze) {
+    public void findSolution() {
         try {
             Client me = new Client(InetAddress.getLocalHost(), 5600, new IClientStrategy() {
                 @Override
@@ -122,50 +122,70 @@ public class MyModel extends Observable implements IModel {
 
     @Override
     public void movePlayer(KeyCode step) {
+        boolean moved = false;
         switch (step){
             case NUMPAD8: // up
                 if (maze.isPath(playerRow-1, playerCol))
                     playerRow--;
+                moved = true;
                 break;
             case NUMPAD2: // down
                 if (maze.isPath(playerRow+1, playerCol))
                     playerRow++;
+                moved = true;
                 break;
             case NUMPAD4: // left
                 if (maze.isPath(playerRow, playerCol--))
                     playerCol--;
+                moved = true;
                 break;
             case NUMPAD6: // right
                 if (maze.isPath(playerRow, playerCol++))
                     playerCol++;
+                moved = true;
                 break;
             case NUMPAD9: // up and right
                 if (maze.isPath(playerRow-1, playerCol+1)){
                     playerRow--;
                     playerCol++;
                 }
+                moved = true;
                 break;
             case NUMPAD7: // up and left
                 if (maze.isPath(playerRow-1, playerCol-1)){
                     playerRow--;
                     playerCol--;
                 }
+                moved = true;
                 break;
             case NUMPAD3: // down and right
                 if (maze.isPath(playerRow+1, playerCol+1)){
                     playerRow++;
                     playerCol++;
                 }
+                moved = true;
                 break;
             case NUMPAD1: // down and left
                 if (maze.isPath(playerRow+1, playerCol-1)){
                     playerRow++;
                     playerCol--;
                 }
+                moved = true;
                 break;
         }
+        if (moved){
+            setChanged();
+            notifyObservers();
+        }
+    }
 
-        setChanged();
-        notifyObservers();
+    @Override
+    public int getPlayerRow() {
+        return playerRow;
+    }
+
+    @Override
+    public int getPlayerCol() {
+        return playerCol;
     }
 }

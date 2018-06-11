@@ -1,20 +1,60 @@
 package sample;
 
+import Model.IModel;
+import Model.MyModel;
+import View.MyViewController;
+import ViewModel.MyViewModel;
 import javafx.application.Application;
+import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
+
+import java.util.Optional;
 
 public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception{
-        Parent root = FXMLLoader.load(getClass().getResource("../View/MyView.fxml"));
-        primaryStage.setTitle("Hello World");
-        primaryStage.setScene(new Scene(root, 600, 400));
+
+        IModel m = new MyModel();
+        m.initModel();
+        MyViewModel vm = new MyViewModel(m);
+        ((MyModel) m).addObserver(vm);
+        //---------
+        FXMLLoader fxml = new FXMLLoader(getClass().getResource("../View/MyView.fxml"));
+        Parent root = fxml.load();
+        primaryStage.setTitle("Wasssup Nigga");
+        Scene scene = new Scene(root, 600, 400);
+        scene.getStylesheets().add(getClass().getResource("../View/ViewStyle.css").toExternalForm());
+        primaryStage.setScene(scene);
+        // ----------
+        MyViewController view = fxml.getController();
+        view.setViewModel(vm);
+        vm.addObserver(view);
+        // ----------
+        primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {
+            @Override
+            public void handle(WindowEvent event) {
+                Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                alert.setContentText("Are you sure you want to leave?");
+                Optional<ButtonType> result = alert.showAndWait();
+                if (result.get() == ButtonType.OK){
+                    // ... user chose OK
+                    vm.exitGame();
+                } else {
+                    // ... user chose CANCEL or closed the dialog
+                    event.consume();
+                }
+            }
+        }); // taking care of proper exit
         primaryStage.show();
     }
+
 
 
     public static void main(String[] args) {

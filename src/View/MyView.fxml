@@ -20,7 +20,9 @@
 <?import javafx.scene.paint.Stop?>
 <?import javafx.scene.shape.Rectangle?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="569.0" prefWidth="875.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="View.MyViewController">
+<?import View.Displayer?>
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="569.0" prefWidth="875.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="View.MyViewController">
     <top>
         <VBox prefHeight="34.0" prefWidth="875.0" BorderPane.alignment="CENTER">
             <children>
@@ -68,12 +70,12 @@
                         <Insets />
                     </VBox.margin>
                     <children>
-                        <Button mnemonicParsing="false" onAction="#SetStageAboutEvent" text="Generate Maze" GridPane.rowIndex="2" />
-                        <Button mnemonicParsing="false" text="Solve Maze" GridPane.rowIndex="3" />
+                        <Button fx:id="btn_generateButton" mnemonicParsing="false" onAction="#generateMaze" text="Generate Maze" GridPane.rowIndex="2" />
+                        <Button fx:id="btn_solveButton" mnemonicParsing="false" text="Solve Maze" GridPane.rowIndex="3" />
                         <Label text="Rows" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                         <Label text="Columns" GridPane.columnIndex="1" />
-                        <TextField GridPane.rowIndex="1" />
-                        <TextField />
+                        <TextField fx:id="txt_rowsFromUser" GridPane.rowIndex="1" />
+                        <TextField fx:id="txt_colsFromUser"/>
                     </children>
                 </GridPane>
             </children>
@@ -94,6 +96,7 @@
                             </stops>
                         </LinearGradient>
                     </fill></Rectangle>
+                <Displayer fx:id="display" height="356.0" width="406.0"/>
             </children></Pane>
     </center>
     <bottom>
