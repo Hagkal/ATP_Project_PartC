@@ -59,7 +59,8 @@ public class MyModel extends Observable implements IModel {
                         byte[] decompressedMaze = new byte[100000]; //allocating byte[] for the decompressed maze -
                         is.read(decompressedMaze); //Fill decompressedMaze with bytes
                         maze = new Maze(decompressedMaze);
-                        //maze.print();
+                        playerRow = maze.getStartPosition().getRowIndex();
+                        playerCol = maze.getStartPosition().getColumnIndex();
                         // notify when generation is completed
                         setChanged();
                         notifyObservers("mazeDisplay, solutionDisplay, playerDisplay");
@@ -141,18 +142,38 @@ public class MyModel extends Observable implements IModel {
                     playerRow--;
                 moved = true;
                 break;
+            case UP: // up
+                if (maze.isPath(playerRow-1, playerCol))
+                    playerRow--;
+                moved = true;
+                break;
             case NUMPAD2: // down
                 if (maze.isPath(playerRow+1, playerCol))
                     playerRow++;
                 moved = true;
                 break;
+            case DOWN: // down
+                if (maze.isPath(playerRow+1, playerCol))
+                    playerRow++;
+                moved = true;
+                break;
             case NUMPAD4: // left
-                if (maze.isPath(playerRow, playerCol--))
+                if (maze.isPath(playerRow, playerCol-1))
+                    playerCol--;
+                moved = true;
+                break;
+            case LEFT: // left
+                if (maze.isPath(playerRow, playerCol-1))
                     playerCol--;
                 moved = true;
                 break;
             case NUMPAD6: // right
-                if (maze.isPath(playerRow, playerCol++))
+                if (maze.isPath(playerRow, playerCol+1))
+                    playerCol++;
+                moved = true;
+                break;
+            case RIGHT: // right
+                if (maze.isPath(playerRow, playerCol+1))
                     playerCol++;
                 moved = true;
                 break;
@@ -187,7 +208,7 @@ public class MyModel extends Observable implements IModel {
         }
         if (moved){
             setChanged();
-            notifyObservers();
+            notifyObservers("playerDisplay");
         }
     }
 

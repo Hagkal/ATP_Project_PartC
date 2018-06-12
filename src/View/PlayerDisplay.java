@@ -1,0 +1,28 @@
+package View;
+
+import algorithms.mazeGenerators.Maze;
+import algorithms.search.AState;
+import algorithms.search.MazeState;
+import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.paint.Color;
+
+public class PlayerDisplay extends Display {
+
+    public void display(Object... o){
+        GraphicsContext gc = getGraphicsContext2D();
+        gc.clearRect(0, 0, getWidth(), getHeight());
+        gc.setFill(Color.WHITE);
+
+        if (!(o[0] instanceof Maze) || !(o[1] instanceof Integer) || !(o[2] instanceof Integer))
+            return;
+
+        Maze m = (Maze) o[0];
+        int[][] maze = m.getMaze();
+
+        double cellHeight = getHeight() / maze.length;
+        double cellWidth = getWidth() / maze[0].length;
+
+        gc.fillRect((Integer)o[2] * cellWidth, (Integer)o[1] * cellHeight, cellWidth, cellHeight);
+
+    }
+}

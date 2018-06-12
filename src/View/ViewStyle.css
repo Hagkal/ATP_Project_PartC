@@ -16,7 +16,7 @@
 .dialog-pane > .content.label {
    -fx-padding: 0.5em 0.5em 0.5em 0.5em;
    /*-fx-background-image: url("../../../../Resources/aboutus.jpeg");*/
-   -fx-background-color: hsla(50, 33%, 25%, .75);
+   -fx-background-color: red; /*(50, 33%, 25%, .75);*/
    -fx-text-fill:black;
    -fx-font-size:15.0px;
    -fx-font-weight: bold;

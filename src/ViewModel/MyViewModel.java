@@ -34,6 +34,14 @@ public class MyViewModel extends Observable implements Observer {
         this.model = theModel;
     }
 
+    public int getPlayerRow() {
+        return playerRow;
+    }
+
+    public int getPlayerCol() {
+        return playerCol;
+    }
+
     @Override
     public void update(Observable o, Object arg) {
         if (o == model){

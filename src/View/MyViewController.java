@@ -29,11 +29,6 @@ public class MyViewController implements IView, Observer {
     public javafx.scene.control.Button btn_generateButton;
     public javafx.scene.control.Button btn_solveButton;
 
-
-
-    public javafx.scene.control.Button btn_generateMaze;
-    public javafx.scene.control.Button btn_solveMaze;
-
     public void SetStageAboutEvent(ActionEvent actionEvent) {
 
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
@@ -112,6 +107,7 @@ public class MyViewController implements IView, Observer {
             btn_generateButton.setDisable(true);
             viewModel.generateMaze(row, col);
             btn_generateButton.setDisable(false);
+            btn_solveButton.setDisable(false);
 
         } catch (NumberFormatException e){
             //e.printStackTrace();
@@ -136,11 +132,11 @@ public class MyViewController implements IView, Observer {
         if (o == viewModel && args.contains("mazeDisplay"))
             mazeDisplay.display(viewModel.getMaze());
 
-        if (o == viewModel && args.contains("solutionDisplay")){
-            Solution s = viewModel.getSolution();
-            solutionDisplay.display(viewModel.getMaze(), s);
+        if (o == viewModel && args.contains("solutionDisplay"))
+            solutionDisplay.display(viewModel.getMaze(), viewModel.getSolution());
 
-        }
+        if (o == viewModel && args.contains("playerDisplay"))
+            playerDisplay.display(viewModel.getMaze(), viewModel.getPlayerRow(), viewModel.getPlayerCol());
     }
 
     /**

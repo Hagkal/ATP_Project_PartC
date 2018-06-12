@@ -23,7 +23,8 @@
 
 <?import View.MazeDisplayer?>
 <?import View.SolutionDisplayer?>
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="569.0" prefWidth="875.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1"
+<?import View.PlayerDisplay?>
+<BorderPane onKeyPressed="#movePlayer" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="569.0" prefWidth="875.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1"
             fx:controller="View.MyViewController">
     <top>
         <VBox prefHeight="34.0" prefWidth="875.0" BorderPane.alignment="CENTER">
@@ -75,12 +76,12 @@
                         <Insets />
                     </VBox.margin>
                     <children>
-                        <Button fx:id="btn_generatemaze" defaultButton="true" mnemonicParsing="false" onAction="#SetStageNewEvent" text="Generate Maze" GridPane.rowIndex="2" />
-                        <Button fx:id="btn_solvemaze" defaultButton="true" disable="true" mnemonicParsing="false" onAction="#solveMaze" text="Solve Maze" GridPane.rowIndex="3" />
+                        <Button fx:id="btn_generateButton" defaultButton="true" mnemonicParsing="false" onAction="#SetStageNewEvent" text="Generate Maze" GridPane.rowIndex="2" />
+                        <Button fx:id="btn_solveButton" defaultButton="true" disable="true" mnemonicParsing="false" onAction="#solveMaze" text="Solve Maze" GridPane.rowIndex="3" />
                         <Label text="Rows" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                         <Label text="Columns" GridPane.columnIndex="1" />
-                        <TextField fx:id="rowsFromUser" GridPane.rowIndex="1" />
-                        <TextField fx:id="colsFromUser" />
+                        <TextField fx:id="txt_rowsFromUser" GridPane.rowIndex="1" />
+                        <TextField fx:id="txt_colsFromUser" />
                   <Label text="Current Position:" textAlignment="CENTER" GridPane.rowIndex="4">
                      <font>
                         <Font name="System Bold" size="12.0" />
@@ -113,6 +114,7 @@
                     </fill></Rectangle>
                 <MazeDisplayer fx:id="mazeDisplay" height="356.0" width="406.0"/>
                 <SolutionDisplayer fx:id="solutionDisplay" height="356.0" width="406.0"/>
+                <PlayerDisplay fx:id="playerDisplay" height="356.0" width="406.0"/>
             </children></Pane>
     </center>
     <bottom>
