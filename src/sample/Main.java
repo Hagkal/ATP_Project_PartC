@@ -70,13 +70,13 @@ public class Main extends Application {
         mediaPlayer.play();*/
 
         /** Change scene dimensions **/
-        primaryStage.heightProperty().addListener((observable, oldValue, newValue) -> {
+        primaryStage.getScene().heightProperty().addListener((observable, oldValue, newValue) -> {
             double height = (double) newValue / 2;
-            root.prefHeight(height);
+            primaryStage.getScene().getRoot().prefHeight(height);
         });
         primaryStage.widthProperty().addListener((observable, oldValue, newValue) -> {
             double width = (double) newValue / 2;
-            root.prefWidth(width);
+            primaryStage.getScene().getRoot().prefWidth(width);
         });
 
     }

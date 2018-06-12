@@ -4,6 +4,7 @@ import Server.Server;
 import ViewModel.MyViewModel;
 import algorithms.search.Solution;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
@@ -12,6 +13,7 @@ import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import javafx.scene.control.DialogPane;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.layout.BorderPane;
 
 import java.util.Observable;
 import java.util.Observer;
@@ -28,11 +30,8 @@ public class MyViewController implements IView, Observer {
     public javafx.scene.control.TextField txt_colsFromUser;
     public javafx.scene.control.Button btn_generateButton;
     public javafx.scene.control.Button btn_solveButton;
+    public javafx.scene.layout.BorderPane borderPane;
 
-
-
-    public javafx.scene.control.Button btn_generateMaze;
-    public javafx.scene.control.Button btn_solveMaze;
 
     public void SetStageAboutEvent(ActionEvent actionEvent) {
 
@@ -95,6 +94,22 @@ public class MyViewController implements IView, Observer {
         }
     }
 
+    public void setOnCloseRequest(ActionEvent actionEvent) {
+
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setContentText("Are you sure you want to leave?");
+        Optional<ButtonType> result = alert.showAndWait();
+        if (result.get() == ButtonType.OK){
+            // ... user chose OK
+            viewModel.exitGame();
+            System.exit(0);
+        } else {
+            // ... user chose CANCEL or closed the dialog
+            actionEvent.consume();
+        }
+
+    }
+
 
     /**
      * a method to set the ViewModel of the application
@@ -112,6 +127,7 @@ public class MyViewController implements IView, Observer {
             btn_generateButton.setDisable(true);
             viewModel.generateMaze(row, col);
             btn_generateButton.setDisable(false);
+            btn_solveButton.setDisable(false);
 
         } catch (NumberFormatException e){
             //e.printStackTrace();
