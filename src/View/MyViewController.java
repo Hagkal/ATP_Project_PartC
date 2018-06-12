@@ -26,7 +26,7 @@ public class MyViewController implements IView {
         dialogPane.getStyleClass().add("myDialog");
         alert.setContentText("Welcome to our maze application!" + '\n' + "In this application you can generate a random maze and try to solve it your own, or you can ask the application to do it." + '\n'
         + "Maze generation made by Prim's algorithm and solved by DFS algorithm." + '\n' + "The programmers behind this application:" + '\n' + "Hagai Kalinhoff and Omri Naor");
-        alert.setHeaderText("About");
+        alert.setHeaderText("                    About");
         alert.setTitle("About");
         Optional<ButtonType> result = alert.showAndWait();
     }
@@ -42,7 +42,7 @@ public class MyViewController implements IView {
         "Game Instructions:" + '\n' + "Use the NumPad numbers to move the character:" + '\n' +
         "UP - 8" + '\n' + "DOWN - 2" + '\n' + "RIGHT - 6" + '\n' + "LEFT - 4" + '\n'
         + "Diagonal Moves:" + '\n' + "UP-LEFT - 7" + '\n' + "DOWN-LEFT - 1" + '\n' + "UP-RIGHT - 9" + '\n' + "DOWN-RIGHT - 3" + '\n');
-        alert.setHeaderText("Help");
+        alert.setHeaderText("                    Help");
         alert.setTitle("Help");
         Optional<ButtonType> result = alert.showAndWait();
     }
@@ -53,7 +53,7 @@ public class MyViewController implements IView {
         dialogPane.getStylesheets().add(
                 getClass().getResource("ViewStyle.css").toExternalForm());
         dialogPane.getStyleClass().add("myDialog");
-        alert.setHeaderText("Properties");
+        alert.setHeaderText("             Properties");
         alert.setTitle("Properties");
         String mazeType = Server.Configurations.getProperty("mazeType");
         String searchingAlgorithm = Server.Configurations.getProperty("searchingAlgorithm");
@@ -68,7 +68,7 @@ public class MyViewController implements IView {
                 getClass().getResource("ViewStyle.css").toExternalForm());
         dialogPane.getStyleClass().add("myDialog");
         alert.setContentText("Are you sure you want to generate a new maze?");
-        alert.setHeaderText("New Game");
+        alert.setHeaderText("              New Game");
         alert.setTitle("New Game");
         Optional<ButtonType> result = alert.showAndWait();
         if (result.get() == ButtonType.OK){
