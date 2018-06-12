@@ -21,7 +21,10 @@
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="569.0" prefWidth="875.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="View.MyViewController">
+<?import View.MazeDisplayer?>
+<?import View.SolutionDisplayer?>
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="569.0" prefWidth="875.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="View.MyViewController">
     <top>
         <VBox prefHeight="34.0" prefWidth="875.0" BorderPane.alignment="CENTER">
             <children>
@@ -73,7 +76,7 @@
                     </VBox.margin>
                     <children>
                         <Button fx:id="btn_generatemaze" defaultButton="true" mnemonicParsing="false" onAction="#SetStageNewEvent" text="Generate Maze" GridPane.rowIndex="2" />
-                        <Button fx:id="btn_solvemaze" defaultButton="true" disable="true" mnemonicParsing="false" text="Solve Maze" GridPane.rowIndex="3" />
+                        <Button fx:id="btn_solvemaze" defaultButton="true" disable="true" mnemonicParsing="false" onAction="#solveMaze" text="Solve Maze" GridPane.rowIndex="3" />
                         <Label text="Rows" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                         <Label text="Columns" GridPane.columnIndex="1" />
                         <TextField fx:id="rowsFromUser" GridPane.rowIndex="1" />
@@ -87,6 +90,7 @@
                   <Label layoutX="10.0" layoutY="20.0" text="Row:" GridPane.rowIndex="6" />
                   <Label layoutX="10.0" layoutY="236.0" text="Label" GridPane.columnIndex="1" GridPane.rowIndex="5" />
                   <Label layoutX="10.0" layoutY="20.0" text="Label" GridPane.columnIndex="1" GridPane.rowIndex="6" />
+
                     </children>
                 </GridPane>
             </children>
@@ -98,7 +102,7 @@
     <center>
         <Pane prefHeight="356.0" prefWidth="406.0" BorderPane.alignment="CENTER">
             <children>
-                <Rectangle arcHeight="5.0" arcWidth="5.0" height="525.0" stroke="BLACK" strokeType="INSIDE" width="659.0">
+                <Rectangle arcHeight="5.0" arcWidth="5.0" height="356.0" stroke="BLACK" strokeType="INSIDE" width="406.0">
                     <fill>
                         <LinearGradient endX="1.0" endY="1.0">
                             <stops>
@@ -107,6 +111,8 @@
                             </stops>
                         </LinearGradient>
                     </fill></Rectangle>
+                <MazeDisplayer fx:id="mazeDisplay" height="356.0" width="406.0"/>
+                <SolutionDisplayer fx:id="solutionDisplay" height="356.0" width="406.0"/>
             </children></Pane>
     </center>
     <bottom>
