@@ -5,16 +5,26 @@ import Model.MyModel;
 import View.MyViewController;
 import ViewModel.MyViewModel;
 import javafx.application.Application;
+
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
+
 import javafx.event.EventHandler;
+
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.stage.Stage;
+
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
+import java.io.File;
 import javafx.stage.WindowEvent;
 
 import java.util.Optional;
+
 
 public class Main extends Application {
 
@@ -53,6 +63,22 @@ public class Main extends Application {
             }
         }); // taking care of proper exit
         primaryStage.show();
+
+        /** Background music **/
+        /*Media sound = new Media(new File("Resources/Muse.mp3").toURI().toString());
+        MediaPlayer mediaPlayer = new MediaPlayer(sound);
+        mediaPlayer.play();*/
+
+        /** Change scene dimensions **/
+        primaryStage.heightProperty().addListener((observable, oldValue, newValue) -> {
+            double height = (double) newValue / 2;
+            root.prefHeight(height);
+        });
+        primaryStage.widthProperty().addListener((observable, oldValue, newValue) -> {
+            double width = (double) newValue / 2;
+            root.prefWidth(width);
+        });
+
     }
 
 
