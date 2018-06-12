@@ -38,6 +38,7 @@ public class MyModel extends Observable implements IModel {
                 @Override
                 public void clientStrategy(InputStream inFromServer, OutputStream outToServer) {
                     try {
+                        solved = null;
                         ObjectOutputStream toServer = new ObjectOutputStream(outToServer);
                         ObjectInputStream fromServer = new ObjectInputStream(inFromServer);
                         toServer.flush();
@@ -48,10 +49,20 @@ public class MyModel extends Observable implements IModel {
 
                         byte[] compressedMaze = (byte[]) fromServer.readObject(); //read generated maze (compressed with MyCompressor) from server
                         InputStream is = new MyDecompressorInputStream(new ByteArrayInputStream(compressedMaze));
-                        byte[] decompressedMaze = new byte[2600]; //allocating byte[] for the decompressed maze -
+
+                        /*
+                        this lower part needs to be changed to the exact size of byte[] needed.
+                        solution a - fix MyDecompress with try/catch to return -1 if byte[] is not sufficient
+                                        and redo the call with 10 times byte[] size
+                        solution b - completely change read(byte[]) method to return a fixed size byte[] to be used
+                         */
+                        byte[] decompressedMaze = new byte[100000]; //allocating byte[] for the decompressed maze -
                         is.read(decompressedMaze); //Fill decompressedMaze with bytes
                         maze = new Maze(decompressedMaze);
                         //maze.print();
+                        // notify when generation is completed
+                        setChanged();
+                        notifyObservers("mazeDisplay, solutionDisplay, playerDisplay");
 
                     } catch (Exception e) {
                         e.printStackTrace();
@@ -62,9 +73,6 @@ public class MyModel extends Observable implements IModel {
             // lets the client operate with server
             me.communicateWithServer();
 
-            // notify when generation is completed
-            setChanged();
-            notifyObservers();
 
         } catch (UnknownHostException e) {
             e.printStackTrace();
@@ -79,18 +87,24 @@ public class MyModel extends Observable implements IModel {
     @Override
     public void findSolution() {
         try {
+            if (maze == null)
+                return;
             Client me = new Client(InetAddress.getLocalHost(), 5600, new IClientStrategy() {
                 @Override
                 public void clientStrategy(InputStream inputStream, OutputStream outputStream) {
                     try {
-                        ObjectInputStream fromServer = new ObjectInputStream(inputStream);
                         ObjectOutputStream toServer = new ObjectOutputStream(outputStream);
+                        ObjectInputStream fromServer = new ObjectInputStream(inputStream);
                         toServer.flush();
 
                         toServer.writeObject(maze);
                         toServer.flush();
 
                         solved = (Solution) fromServer.readObject();
+
+                        // notifying observers (View Model)
+                        setChanged();
+                        notifyObservers("solutionDisplay");
 
                     } catch (Exception e) {
                         e.printStackTrace();
@@ -101,9 +115,7 @@ public class MyModel extends Observable implements IModel {
             // communicating with server for a solution
             me.communicateWithServer();
 
-            // notifying observers (View Model)
-            setChanged();
-            notifyObservers();
+
         } catch (UnknownHostException e) {
             e.printStackTrace();
         }

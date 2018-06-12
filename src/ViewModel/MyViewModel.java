@@ -43,7 +43,7 @@ public class MyViewModel extends Observable implements Observer {
             playerColProperty.setValue("" + playerCol);
 
             setChanged();
-            notifyObservers("Player");
+            notifyObservers(arg);
         }
     }
 

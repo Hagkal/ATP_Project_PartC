@@ -1,14 +1,12 @@
 package View;
 
 import ViewModel.MyViewModel;
+import algorithms.search.Solution;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.scene.input.KeyEvent;
-import javafx.stage.Stage;
-import javafx.stage.WindowEvent;
 
 import java.util.Observable;
 import java.util.Observer;
@@ -18,7 +16,9 @@ public class MyViewController implements IView, Observer {
 
     private MyViewModel viewModel;
     @FXML
-    public Displayer display;
+    public Display mazeDisplay;
+    public Display solutionDisplay;
+    public Display playerDisplay;
     public javafx.scene.control.TextField txt_rowsFromUser;
     public javafx.scene.control.TextField txt_colsFromUser;
     public javafx.scene.control.Button btn_generateButton;
@@ -88,8 +88,14 @@ public class MyViewController implements IView, Observer {
 
     @Override
     public void update(Observable o, Object arg) {
-        if (o == viewModel){
-            display.display(viewModel.getMaze());
+        String args = (String) arg;
+        if (o == viewModel && args.contains("mazeDisplay"))
+            mazeDisplay.display(viewModel.getMaze());
+
+        if (o == viewModel && args.contains("solutionDisplay")){
+            Solution s = viewModel.getSolution();
+            solutionDisplay.display(viewModel.getMaze(), s);
+
         }
     }
 
@@ -104,6 +110,12 @@ public class MyViewController implements IView, Observer {
     }
 
 
-
+    public void solveMaze(ActionEvent actionEvent) {
+        btn_solveButton.setDisable(true);
+        btn_solveButton.setDisable(true);
+        viewModel.solve();
+        btn_solveButton.setDisable(false);
+        btn_generateButton.setDisable(false);
+    }
 }
 

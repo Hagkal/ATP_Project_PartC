@@ -8,13 +8,13 @@ import javafx.scene.image.Image;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 
-public class Displayer extends Canvas {
+public class MazeDisplayer extends Display {
 
-    public void display(Object o){
-        if (!(o instanceof Maze))
+    public void display(Object... o){
+        if (!(o[0] instanceof Maze))
             return;
 
-        Maze m = (Maze) o;
+        Maze m = (Maze) o[0];
         int[][] maze = m.getMaze();
 
         double canvasHeight = getHeight();
@@ -33,7 +33,7 @@ public class Displayer extends Canvas {
             for (int i = 0; i < maze.length; i++) {
                 for (int j = 0; j < maze[i].length; j++) {
                     if (maze[i][j] == 1) {
-                        gc.fillRect(i * cellHeight, j * cellWidth, cellHeight, cellWidth);
+                        gc.fillRect(j * cellWidth, i * cellHeight, cellWidth, cellHeight);
                         //gc.drawImage(wallImage, i * cellHeight, j * cellWidth, cellHeight, cellWidth);
                     }
                 }
