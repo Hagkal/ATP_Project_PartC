@@ -151,6 +151,17 @@ public class MyViewController implements IView, Observer {
 
         if (o == viewModel && args.contains("playerDisplay"))
             playerDisplay.display(viewModel.getMaze(), viewModel.getPlayerRow(), viewModel.getPlayerCol());
+
+        if (o == viewModel && args.contains("WINNER")){
+            /* functionality for finished game!
+             * maybe cancel all other current maze related operations
+             */
+            Alert goodJob = new Alert(Alert.AlertType.INFORMATION);
+            goodJob.setContentText("NICE :)\n You Win!");
+            goodJob.showAndWait();
+
+
+        }
     }
 
     /**

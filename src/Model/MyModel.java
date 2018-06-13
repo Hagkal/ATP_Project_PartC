@@ -60,7 +60,13 @@ public class MyModel extends Observable implements IModel {
                         solution b - completely change read(byte[]) method to return a fixed size byte[] to be used
                          */
                         byte[] decompressedMaze = new byte[100000]; //allocating byte[] for the decompressed maze -
-                        is.read(decompressedMaze); //Fill decompressedMaze with bytes
+                        while (is.read(decompressedMaze) == -1){
+                            //System.out.println(decompressedMaze.length);
+                            is.close();
+                            is = new MyDecompressorInputStream(new ByteArrayInputStream(compressedMaze));
+                            decompressedMaze = new byte[decompressedMaze.length*10];
+                        }
+                        //is.read(decompressedMaze); //Fill decompressedMaze with bytes
                         maze = new Maze(decompressedMaze);
                         playerRow = maze.getStartPosition().getRowIndex();
                         playerCol = maze.getStartPosition().getColumnIndex();
@@ -210,8 +216,12 @@ public class MyModel extends Observable implements IModel {
                 break;
         }
         if (moved){
+            boolean finished = false;
+            if (playerRow == maze.getGoalPosition().getRowIndex()
+                    && playerCol == maze.getGoalPosition().getColumnIndex())
+                finished = true;
             setChanged();
-            notifyObservers("playerDisplay");
+            notifyObservers(finished ? "playerDisplay, WINNER" : "playerDisplay");
         }
     }
 
