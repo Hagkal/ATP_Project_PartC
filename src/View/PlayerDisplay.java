@@ -8,6 +8,10 @@ import javafx.scene.paint.Color;
 
 public class PlayerDisplay extends Display {
 
+    /**
+     * displaying the player layer
+     * @param o - an array of given object to be of aid
+     */
     public void display(Object... o){
         GraphicsContext gc = getGraphicsContext2D();
         gc.clearRect(0, 0, getWidth(), getHeight());
@@ -25,4 +29,5 @@ public class PlayerDisplay extends Display {
         gc.fillRect((Integer)o[2] * cellWidth, (Integer)o[1] * cellHeight, cellWidth, cellHeight);
 
     }
+
 }

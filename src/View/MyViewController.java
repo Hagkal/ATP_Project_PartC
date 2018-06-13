@@ -8,11 +8,14 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.MouseDragEvent;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import javafx.scene.control.DialogPane;
 import javafx.scene.input.KeyEvent;
+import sample.Main;
 
 import java.util.Observable;
 import java.util.Observer;
@@ -202,6 +205,30 @@ public class MyViewController implements IView, Observer {
      */
     public void loadGame(){
         viewModel.loadGame();
+    }
+
+
+    public void dragOver(MouseDragEvent mouseDragEvent) {
+        if (viewModel.getMaze()==null)
+            return;
+        System.out.println("In the method");
+        double mouseX = mouseDragEvent.getX() / playerDisplay.getWidth();
+        double mouseY = mouseDragEvent.getY() / playerDisplay.getHeight();
+
+        if (Math.abs(viewModel.getPlayerRow() - mouseX) < 2 || Math.abs(viewModel.getPlayerCol() - mouseY) < 2){
+            if (mouseX < viewModel.getPlayerCol())
+                viewModel.movePlayer(KeyCode.LEFT);
+
+            if (mouseX > viewModel.getPlayerCol())
+                viewModel.movePlayer(KeyCode.RIGHT);
+
+            if (mouseY < viewModel.getPlayerRow())
+                viewModel.movePlayer(KeyCode.UP);
+
+            if (mouseY > viewModel.getPlayerCol())
+                viewModel.movePlayer(KeyCode.DOWN);
+        }
+
     }
 }
 

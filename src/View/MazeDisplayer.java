@@ -22,6 +22,8 @@ public class MazeDisplayer extends Display {
         double canvasWidth = getWidth();
         double cellHeight = canvasHeight / maze.length;
         double cellWidth = canvasWidth / maze[0].length;
+        Display.cellHeight = cellHeight;
+        Display.cellWidth = cellWidth;
 
         try {
             //Image wallImage = new Image(new FileInputStream(ImageFileNameWall.get()));

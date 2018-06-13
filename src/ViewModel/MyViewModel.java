@@ -103,4 +103,8 @@ public class MyViewModel extends Observable implements Observer {
     public void loadGame() {
         model.loadGame();
     }
+
+    public void dragOver() {
+        model.dragPlayer();
+    }
 }
