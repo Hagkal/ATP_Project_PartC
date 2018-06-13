@@ -47,8 +47,8 @@ public class MyViewModel extends Observable implements Observer {
         if (o == model){
             playerRow = model.getPlayerRow();
             playerCol = model.getPlayerCol();
-            playerRowProperty.setValue("" + playerRow);
-            playerColProperty.setValue("" + playerCol);
+            playerRowProperty.setValue(playerRow+1 + "");
+            playerColProperty.setValue(playerCol+1 + "");
 
             setChanged();
             notifyObservers(arg);
