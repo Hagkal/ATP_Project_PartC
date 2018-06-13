@@ -8,6 +8,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import javafx.scene.control.DialogPane;
@@ -28,6 +29,8 @@ public class MyViewController implements IView, Observer {
     public javafx.scene.control.TextField txt_colsFromUser;
     public javafx.scene.control.Button btn_generateButton;
     public javafx.scene.control.Button btn_solveButton;
+    public javafx.scene.control.Label lbl_playerRow;
+    public javafx.scene.control.Label lbl_playerCol;
 
     public void SetStageAboutEvent(ActionEvent actionEvent) {
 
@@ -95,7 +98,18 @@ public class MyViewController implements IView, Observer {
      * a method to set the ViewModel of the application
      * @param given - the given ViewModel
      */
-    public void setViewModel(MyViewModel given){this.viewModel = given;}
+    public void setViewModel(MyViewModel given){
+        this.viewModel = given;
+        setProperties();
+    }
+
+    /**
+     * a method to bind the properties for display
+     */
+    private void setProperties() {
+        lbl_playerRow.textProperty().bind(viewModel.playerRowPropertyProperty());
+        lbl_playerCol.textProperty().bind(viewModel.playerColPropertyProperty());
+    }
 
     /**
      * a method to generate a maze with the sizes inserted
@@ -149,13 +163,34 @@ public class MyViewController implements IView, Observer {
         prob.showAndWait();
     }
 
-
+    /**
+     * a method to solve the maze
+     * @param actionEvent - ignored click event
+     */
     public void solveMaze(ActionEvent actionEvent) {
         btn_solveButton.setDisable(true);
         btn_solveButton.setDisable(true);
         viewModel.solve();
         btn_solveButton.setDisable(false);
         btn_generateButton.setDisable(false);
+    }
+
+    /**
+     * a method to save the current game
+     * @param actionEvent - ignored
+     */
+    public void saveGame(ActionEvent actionEvent) {
+        if (viewModel.getMaze() == null)
+            popProblem("You must generate a maze before saving it!");
+        else
+            viewModel.saveGame();
+    }
+
+    /**
+     * a method to load a previously saved game
+     */
+    public void loadGame(){
+        viewModel.loadGame();
     }
 }
 

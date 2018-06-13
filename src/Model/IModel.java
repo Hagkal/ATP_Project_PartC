@@ -26,10 +26,10 @@ public interface IModel {
     public Solution getSolution();
 
     // saving current game state
-    //public void saveGame();
+    public void saveGame();
 
     // load saved game state
-    //public void loadGame();
+    public void loadGame();
 
     // defining settings
     //public void setNewSettings(String[] args);

@@ -34,6 +34,6 @@ public class SolutionDisplayer extends Display {
             int colorRow = mState.getCurrentPosition().getRowIndex();
             int colorCol = mState.getCurrentPosition().getColumnIndex();
             gc.fillRect(colorCol * cellWidth, colorRow * cellHeight, cellWidth, cellHeight);
-        }/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        }
     }
 }

@@ -34,8 +34,8 @@
                         <Menu mnemonicParsing="false" text="File">
                             <items>
                                 <MenuItem fx:id="menu_inside_new" mnemonicParsing="false" onAction="#SetStageNewEvent" text="New" />
-                                <MenuItem mnemonicParsing="false" text="Save" />
-                                <MenuItem mnemonicParsing="false" text="Load" />
+                                <MenuItem onAction="#saveGame" mnemonicParsing="false" text="Save" />
+                                <MenuItem onAction="#loadGame" mnemonicParsing="false" text="Load" />
                                 <MenuItem mnemonicParsing="false" text="Exit" />
                             </items>
                         </Menu>
@@ -80,8 +80,8 @@
                         <Button fx:id="btn_solveButton" defaultButton="true" disable="true" mnemonicParsing="false" onAction="#solveMaze" text="Solve Maze" GridPane.rowIndex="3" />
                         <Label text="Rows" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                         <Label text="Columns" GridPane.columnIndex="1" />
-                        <TextField fx:id="txt_rowsFromUser" GridPane.rowIndex="1" />
-                        <TextField fx:id="txt_colsFromUser" />
+                        <TextField fx:id="txt_rowsFromUser" text="100" GridPane.rowIndex="1" />
+                        <TextField fx:id="txt_colsFromUser" text="100" />
                   <Label text="Current Position:" textAlignment="CENTER" GridPane.rowIndex="4">
                      <font>
                         <Font name="System Bold" size="12.0" />
@@ -89,8 +89,8 @@
                   </Label>
                   <Label layoutX="10.0" layoutY="20.0" text="Column:" GridPane.rowIndex="5" />
                   <Label layoutX="10.0" layoutY="20.0" text="Row:" GridPane.rowIndex="6" />
-                  <Label layoutX="10.0" layoutY="236.0" text="Label" GridPane.columnIndex="1" GridPane.rowIndex="5" />
-                  <Label layoutX="10.0" layoutY="20.0" text="Label" GridPane.columnIndex="1" GridPane.rowIndex="6" />
+                  <Label fx:id="lbl_playerRow" layoutX="10.0" layoutY="236.0" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+                  <Label fx:id="lbl_playerCol" layoutX="10.0" layoutY="20.0" GridPane.columnIndex="1" GridPane.rowIndex="6" />
 
                     </children>
                 </GridPane>
