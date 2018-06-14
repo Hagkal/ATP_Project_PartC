@@ -23,7 +23,12 @@
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane fx:id="borderPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="569.0" prefWidth="875.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="View.MyViewController">
+
+<?import View.MazeDisplayer?>
+<?import View.SolutionDisplayer?>
+<?import View.PlayerDisplay?>
+<BorderPane fx:id="borderPane" onKeyPressed="#movePlayer" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="569.0" prefWidth="875.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="View.MyViewController">
     <top>
         <VBox prefHeight="34.0" prefWidth="875.0" BorderPane.alignment="CENTER">
             <children>
@@ -32,9 +37,9 @@
                         <Menu mnemonicParsing="false" text="File">
                             <items>
                                 <MenuItem fx:id="menu_inside_new" mnemonicParsing="false" onAction="#SetStageNewEvent" text="New" />
-                                <MenuItem mnemonicParsing="false" text="Save" />
-                                <MenuItem mnemonicParsing="false" text="Load" />
-                                <MenuItem fx:id="menu_inside_exit" mnemonicParsing="false" onAction="#setOnCloseRequest" text="Exit" />
+                                <MenuItem onAction="#saveGame" mnemonicParsing="false" text="Save" />
+                                <MenuItem onAction="#loadGame" mnemonicParsing="false" text="Load" />
+                                <MenuItem mnemonicParsing="false" text="Exit" />
                             </items>
                         </Menu>
                         <Menu mnemonicParsing="false" text="Options">
@@ -78,8 +83,8 @@
                         <Button fx:id="btn_solveButton" defaultButton="true" disable="true" mnemonicParsing="false" onAction="#solveMaze" text="Solve Maze" GridPane.rowIndex="3" />
                         <Label text="Rows" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                         <Label text="Columns" GridPane.columnIndex="1" />
-                        <TextField fx:id="txt_rowsFromUser" GridPane.rowIndex="1" />
-                        <TextField fx:id="txt_colsFromUser" />
+                        <TextField fx:id="txt_rowsFromUser" text="100" GridPane.rowIndex="1" />
+                        <TextField fx:id="txt_colsFromUser" text="100" />
                   <Label text="Current Position:" textAlignment="CENTER" GridPane.rowIndex="4">
                      <font>
                         <Font name="System Bold" size="12.0" />
@@ -87,8 +92,8 @@
                   </Label>
                   <Label layoutX="10.0" layoutY="20.0" text="Column:" GridPane.rowIndex="5" />
                   <Label layoutX="10.0" layoutY="20.0" text="Row:" GridPane.rowIndex="6" />
-                  <Label layoutX="10.0" layoutY="236.0" text="Label" GridPane.columnIndex="1" GridPane.rowIndex="5" />
-                  <Label layoutX="10.0" layoutY="20.0" text="Label" GridPane.columnIndex="1" GridPane.rowIndex="6" />
+                  <Label fx:id="lbl_playerRow" layoutX="10.0" layoutY="236.0" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+                  <Label fx:id="lbl_playerCol" layoutX="10.0" layoutY="20.0" GridPane.columnIndex="1" GridPane.rowIndex="6" />
 
                     </children>
                 </GridPane>
@@ -110,8 +115,9 @@
                             </stops>
                         </LinearGradient>
                     </fill></Rectangle>
-                <MazeDisplayer fx:id="mazeDisplay" height="356.0" width="406.0" />
-                <SolutionDisplayer fx:id="solutionDisplay" height="356.0" width="406.0" />
+                <MazeDisplayer fx:id="mazeDisplay" height="356.0" width="406.0"/>
+                <SolutionDisplayer fx:id="solutionDisplay" height="356.0" width="406.0"/>
+                <PlayerDisplay fx:id="playerDisplay" height="356.0" width="406.0"/>
             </children></Pane>
     </center>
     <bottom>

@@ -4,6 +4,7 @@ import algorithms.mazeGenerators.Maze;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
+import javafx.scene.paint.Color;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -21,6 +22,8 @@ public class MazeDisplayer extends Display {
         double canvasWidth = getWidth();
         double cellHeight = canvasHeight / maze.length;
         double cellWidth = canvasWidth / maze[0].length;
+        Display.cellHeight = cellHeight;
+        Display.cellWidth = cellWidth;
 
         try {
             //Image wallImage = new Image(new FileInputStream(ImageFileNameWall.get()));
@@ -30,6 +33,7 @@ public class MazeDisplayer extends Display {
             gc.clearRect(0, 0, getWidth(), getHeight());
 
             //Draw Maze
+            gc.setFill(Color.BLACK);
             for (int i = 0; i < maze.length; i++) {
                 for (int j = 0; j < maze[i].length; j++) {
                     if (maze[i][j] == 1) {
@@ -39,9 +43,13 @@ public class MazeDisplayer extends Display {
                 }
             }
 
-            //Draw Character
-            //gc.setFill(Color.RED);
-            //gc.fillOval(characterPositionColumn * cellHeight, characterPositionRow * cellWidth, cellHeight, cellWidth);
+            // draw finish position
+            gc.setFill(Color.GOLD);
+            gc.fillRect(m.getGoalPosition().getColumnIndex()*cellWidth,
+                    m.getGoalPosition().getRowIndex()*cellHeight,
+                    cellWidth, cellHeight);
+
+
             //gc.drawImage(characterImage, characterPositionColumn * cellHeight, characterPositionRow * cellWidth, cellHeight, cellWidth);
         } catch (Exception e) {
             //e.printStackTrace();

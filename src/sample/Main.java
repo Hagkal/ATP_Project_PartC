@@ -27,10 +27,12 @@ import java.util.Optional;
 
 
 public class Main extends Application {
+    public static Stage pStage;
 
     @Override
     public void start(Stage primaryStage) throws Exception{
 
+        pStage = primaryStage;
         IModel m = new MyModel();
         m.initModel();
         MyViewModel vm = new MyViewModel(m);

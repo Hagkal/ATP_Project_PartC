@@ -18,11 +18,17 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Region;
 import javafx.scene.text.Text;
 import javafx.stage.Modality;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.MouseDragEvent;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
-
+import sample.Main;
 import java.util.Observable;
 import java.util.Observer;
 import java.util.Optional;
@@ -38,8 +44,8 @@ public class MyViewController implements IView, Observer {
     public javafx.scene.control.TextField txt_colsFromUser;
     public javafx.scene.control.Button btn_generateButton;
     public javafx.scene.control.Button btn_solveButton;
-    public javafx.scene.layout.BorderPane borderPane;
-
+    public javafx.scene.control.Label lbl_playerRow;
+    public javafx.scene.control.Label lbl_playerCol;
 
     public void SetStageAboutEvent(ActionEvent actionEvent) {
 
@@ -131,7 +137,18 @@ public class MyViewController implements IView, Observer {
      * a method to set the ViewModel of the application
      * @param given - the given ViewModel
      */
-    public void setViewModel(MyViewModel given){this.viewModel = given;}
+    public void setViewModel(MyViewModel given){
+        this.viewModel = given;
+        setProperties();
+    }
+
+    /**
+     * a method to bind the properties for display
+     */
+    private void setProperties() {
+        lbl_playerRow.textProperty().bind(viewModel.playerRowPropertyProperty());
+        lbl_playerCol.textProperty().bind(viewModel.playerColPropertyProperty());
+    }
 
     /**
      * a method to generate a maze with the sizes inserted
@@ -168,9 +185,20 @@ public class MyViewController implements IView, Observer {
         if (o == viewModel && args.contains("mazeDisplay"))
             mazeDisplay.display(viewModel.getMaze());
 
-        if (o == viewModel && args.contains("solutionDisplay")){
-            Solution s = viewModel.getSolution();
-            solutionDisplay.display(viewModel.getMaze(), s);
+        if (o == viewModel && args.contains("solutionDisplay"))
+            solutionDisplay.display(viewModel.getMaze(), viewModel.getSolution());
+
+        if (o == viewModel && args.contains("playerDisplay"))
+            playerDisplay.display(viewModel.getMaze(), viewModel.getPlayerRow(), viewModel.getPlayerCol());
+
+        if (o == viewModel && args.contains("WINNER")){
+            /* functionality for finished game!
+             * maybe cancel all other current maze related operations
+             */
+            Alert goodJob = new Alert(Alert.AlertType.INFORMATION);
+            goodJob.setContentText("NICE :)\n You Win!");
+            goodJob.showAndWait();
+
 
         }
     }
@@ -185,13 +213,58 @@ public class MyViewController implements IView, Observer {
         prob.showAndWait();
     }
 
-
+    /**
+     * a method to solve the maze
+     * @param actionEvent - ignored click event
+     */
     public void solveMaze(ActionEvent actionEvent) {
         btn_solveButton.setDisable(true);
         btn_solveButton.setDisable(true);
         viewModel.solve();
         btn_solveButton.setDisable(false);
         btn_generateButton.setDisable(false);
+    }
+
+    /**
+     * a method to save the current game
+     * @param actionEvent - ignored
+     */
+    public void saveGame(ActionEvent actionEvent) {
+        if (viewModel.getMaze() == null)
+            popProblem("You must generate a maze before saving it!");
+        else
+            viewModel.saveGame();
+    }
+
+    /**
+     * a method to load a previously saved game
+     */
+    public void loadGame(){
+        viewModel.loadGame();
+    }
+
+
+    public void dragOver(MouseDragEvent mouseDragEvent) {
+        if (viewModel.getMaze()==null)
+            return;
+        System.out.println("In the method");
+        double mouseX = mouseDragEvent.getX() / playerDisplay.getWidth();
+        double mouseY = mouseDragEvent.getY() / playerDisplay.getHeight();
+
+        if (Math.abs(viewModel.getPlayerRow() - mouseX) < 2 || Math.abs(viewModel.getPlayerCol() - mouseY) < 2){
+            if (mouseX < viewModel.getPlayerCol())
+                viewModel.movePlayer(KeyCode.LEFT);
+
+            if (mouseX > viewModel.getPlayerCol())
+                viewModel.movePlayer(KeyCode.RIGHT);
+
+            if (mouseY < viewModel.getPlayerRow())
+                viewModel.movePlayer(KeyCode.UP);
+
+            if (mouseY > viewModel.getPlayerCol())
+                viewModel.movePlayer(KeyCode.DOWN);
+        }
+
     }
 }
 

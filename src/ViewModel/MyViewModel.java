@@ -15,8 +15,8 @@ public class MyViewModel extends Observable implements Observer {
     private IModel model;
     private int playerRow;
     private int playerCol;
-    private StringProperty playerRowProperty = new SimpleStringProperty();
-    private StringProperty playerColProperty = new SimpleStringProperty();
+    private StringProperty playerRowProperty = new SimpleStringProperty("");
+    private StringProperty playerColProperty = new SimpleStringProperty("");
 
     public StringProperty playerRowPropertyProperty() {
         return playerRowProperty;
@@ -34,13 +34,21 @@ public class MyViewModel extends Observable implements Observer {
         this.model = theModel;
     }
 
+    public int getPlayerRow() {
+        return playerRow;
+    }
+
+    public int getPlayerCol() {
+        return playerCol;
+    }
+
     @Override
     public void update(Observable o, Object arg) {
         if (o == model){
             playerRow = model.getPlayerRow();
             playerCol = model.getPlayerCol();
-            playerRowProperty.setValue("" + playerRow);
-            playerColProperty.setValue("" + playerCol);
+            playerRowProperty.setValue(playerRow+1 + "");
+            playerColProperty.setValue(playerCol+1 + "");
 
             setChanged();
             notifyObservers(arg);
@@ -81,4 +89,22 @@ public class MyViewModel extends Observable implements Observer {
      * a method to exit the game properly
      */
     public void exitGame(){model.exitGame();}
+
+    /**
+     * a method to save the current game
+     */
+    public void saveGame() {
+        model.saveGame();
+    }
+
+    /**
+     * a method to load a game
+     */
+    public void loadGame() {
+        model.loadGame();
+    }
+
+    public void dragOver() {
+        model.dragPlayer();
+    }
 }

@@ -5,7 +5,10 @@ import IO.MyDecompressorInputStream;
 import Server.*;
 import algorithms.mazeGenerators.Maze;
 import algorithms.search.Solution;
+import javafx.scene.control.Alert;
 import javafx.scene.input.KeyCode;
+import javafx.stage.FileChooser;
+import sample.Main;
 
 import java.io.*;
 import java.net.InetAddress;
@@ -57,9 +60,16 @@ public class MyModel extends Observable implements IModel {
                         solution b - completely change read(byte[]) method to return a fixed size byte[] to be used
                          */
                         byte[] decompressedMaze = new byte[100000]; //allocating byte[] for the decompressed maze -
-                        is.read(decompressedMaze); //Fill decompressedMaze with bytes
+                        while (is.read(decompressedMaze) == -1){
+                            //System.out.println(decompressedMaze.length);
+                            is.close();
+                            is = new MyDecompressorInputStream(new ByteArrayInputStream(compressedMaze));
+                            decompressedMaze = new byte[decompressedMaze.length*10];
+                        }
+                        //is.read(decompressedMaze); //Fill decompressedMaze with bytes
                         maze = new Maze(decompressedMaze);
-                        //maze.print();
+                        playerRow = maze.getStartPosition().getRowIndex();
+                        playerCol = maze.getStartPosition().getColumnIndex();
                         // notify when generation is completed
                         setChanged();
                         notifyObservers("mazeDisplay, solutionDisplay, playerDisplay");
@@ -141,18 +151,38 @@ public class MyModel extends Observable implements IModel {
                     playerRow--;
                 moved = true;
                 break;
+            case UP: // up
+                if (maze.isPath(playerRow-1, playerCol))
+                    playerRow--;
+                moved = true;
+                break;
             case NUMPAD2: // down
                 if (maze.isPath(playerRow+1, playerCol))
                     playerRow++;
                 moved = true;
                 break;
+            case DOWN: // down
+                if (maze.isPath(playerRow+1, playerCol))
+                    playerRow++;
+                moved = true;
+                break;
             case NUMPAD4: // left
-                if (maze.isPath(playerRow, playerCol--))
+                if (maze.isPath(playerRow, playerCol-1))
+                    playerCol--;
+                moved = true;
+                break;
+            case LEFT: // left
+                if (maze.isPath(playerRow, playerCol-1))
                     playerCol--;
                 moved = true;
                 break;
             case NUMPAD6: // right
-                if (maze.isPath(playerRow, playerCol++))
+                if (maze.isPath(playerRow, playerCol+1))
+                    playerCol++;
+                moved = true;
+                break;
+            case RIGHT: // right
+                if (maze.isPath(playerRow, playerCol+1))
                     playerCol++;
                 moved = true;
                 break;
@@ -186,8 +216,12 @@ public class MyModel extends Observable implements IModel {
                 break;
         }
         if (moved){
+            boolean finished = false;
+            if (playerRow == maze.getGoalPosition().getRowIndex()
+                    && playerCol == maze.getGoalPosition().getColumnIndex())
+                finished = true;
             setChanged();
-            notifyObservers();
+            notifyObservers(finished ? "playerDisplay, WINNER" : "playerDisplay");
         }
     }
 
@@ -199,5 +233,71 @@ public class MyModel extends Observable implements IModel {
     @Override
     public int getPlayerCol() {
         return playerCol;
+    }
+
+    @Override
+    public void saveGame() {
+
+        FileChooser fc = new FileChooser();
+        fc.setTitle("Save Game");
+        fc.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("Game Files", "*.maze"));
+        fc.setInitialDirectory(new File(System.getProperty("user.dir")));
+
+        File file = fc.showSaveDialog(Main.pStage);
+        if (file != null){
+            boolean success = false;
+            try{
+                ObjectOutputStream mazeSaver = new ObjectOutputStream(new FileOutputStream(file));
+                mazeSaver.flush();
+                mazeSaver.writeObject(maze);
+                mazeSaver.flush();
+                mazeSaver.close();
+                success = true;
+
+            } catch (Exception e){
+                success = false;
+            }
+            finally {
+                Alert status = new Alert(success ? Alert.AlertType.CONFIRMATION : Alert.AlertType.ERROR);
+                status.setContentText(success ? "Game Saved!" : "Could not save game :(\n Please try again!");
+                status.showAndWait();
+            }
+
+        }
+
+    }
+
+    @Override
+    public void loadGame() {
+
+        FileChooser fc = new FileChooser();
+        fc.setTitle("Load Game");
+        fc.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("Game File", "*.maze"));
+        fc.setInitialDirectory(new File(System.getProperty("user.dir")));
+
+        File file = fc.showOpenDialog(Main.pStage);
+        if (file != null){
+
+            try {
+                ObjectInputStream gameLoader = new ObjectInputStream(new FileInputStream(file));
+                maze = (Maze) gameLoader.readObject();
+                playerRow = maze.getStartPosition().getRowIndex();
+                playerCol = maze.getStartPosition().getColumnIndex();
+
+                setChanged();
+                notifyObservers("mazeDisplay, solutionDisplay, playerDisplay");
+
+            }
+            catch (Exception e) {
+                Alert a = new Alert(Alert.AlertType.ERROR);
+                a.setContentText("Could not load game :(\n Please try again!");
+                a.showAndWait();
+            }
+        }
+    }
+
+    @Override
+    public void dragPlayer() {
+
     }
 }
