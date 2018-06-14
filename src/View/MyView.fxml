@@ -35,7 +35,7 @@
                                 <MenuItem fx:id="menu_inside_new" mnemonicParsing="false" onAction="#SetStageNewEvent" text="New" />
                                 <MenuItem mnemonicParsing="false" onAction="#saveGame" text="Save" />
                                 <MenuItem mnemonicParsing="false" onAction="#loadGame" text="Load" />
-                                <MenuItem mnemonicParsing="false" text="Exit" />
+                                <MenuItem fx:id="menu_inside_exit" mnemonicParsing="false" onAction="#setOnCloseRequest" text="Exit" />
                             </items>
                         </Menu>
                         <Menu mnemonicParsing="false" text="Options">

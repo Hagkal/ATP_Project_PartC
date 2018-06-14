@@ -107,7 +107,8 @@ public class MyViewController implements IView, Observer {
     }
 
     public void SetStageNewEvent(ActionEvent actionEvent) {
-        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        generateMaze();
+        /*Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         DialogPane dialogPane = alert.getDialogPane();
         dialogPane.getStylesheets().add(
                 getClass().getResource("ViewStyle.css").toExternalForm());
@@ -120,7 +121,7 @@ public class MyViewController implements IView, Observer {
             generateMaze();
         } else {
             actionEvent.consume();
-        }
+        }*/
     }
 
     /*public void SetPlayPauseEvent(ActionEvent actionEvent) {
@@ -234,7 +235,7 @@ public class MyViewController implements IView, Observer {
             goodJob.showAndWait();
 
             /* music for winning */
-            Media sound = new Media(new File("Resources/Muse.mp3").toURI().toString());
+            Media sound = new Media(new File("Resources/gameover.mp3").toURI().toString());
             MediaPlayer mediaPlayer = new MediaPlayer(sound);
             mediaPlayer.play();
 

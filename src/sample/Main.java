@@ -67,9 +67,9 @@ public class Main extends Application {
         primaryStage.show();
 
         /** Background music **/
-        /*Media sound = new Media(new File("Resources/Muse.mp3").toURI().toString());
+        Media sound = new Media(new File("Resources/Muse.mp3").toURI().toString());
         MediaPlayer mediaPlayer = new MediaPlayer(sound);
-        mediaPlayer.play();*/
+        mediaPlayer.play();
 
         /** Change scene dimensions **/
         primaryStage.getScene().heightProperty().addListener((observable, oldValue, newValue) -> {
