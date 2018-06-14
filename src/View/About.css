@@ -1,0 +1,21 @@
+.root{
+     -fx-background-color: linear-gradient(#383838, #838383);
+     -fx-font-size: 10pt;
+ }
+
+ .label{
+    -fx-text-fill:black;
+    -fx-font-size:15.0px;
+    -fx-font-weight: bold;
+  }
+
+ .button{
+-fx-background-color: linear-gradient(#dc9556, #ab4642);
+-fx-background-radius: 10;
+ }
+
+ .button:hover{
+   -fx-background-color:white;
+   -fx-text-fill:black;
+   -fx-font-weight:bold;
+  }
