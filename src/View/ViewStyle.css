@@ -3,6 +3,7 @@
      -fx-font-size: 10pt;
  }
 
+
 .dialog-pane{
   -fx-border-color:linear-gradient(#383838, #838383);
   -fx-border-width:2.0px;
