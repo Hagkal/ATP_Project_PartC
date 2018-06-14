@@ -16,6 +16,8 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Region;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.scene.control.Alert;
@@ -29,6 +31,8 @@ import javafx.stage.WindowEvent;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
 import sample.Main;
+
+import java.io.File;
 import java.util.Observable;
 import java.util.Observer;
 import java.util.Optional;
@@ -46,6 +50,7 @@ public class MyViewController implements IView, Observer {
     public javafx.scene.control.Button btn_solveButton;
     public javafx.scene.control.Label lbl_playerRow;
     public javafx.scene.control.Label lbl_playerCol;
+    public javafx.scene.control.Button btn_playpause;
 
     public void SetStageAboutEvent(ActionEvent actionEvent) {
 
@@ -54,7 +59,7 @@ public class MyViewController implements IView, Observer {
             stage.setTitle("About");
             FXMLLoader fxmlLoader = new FXMLLoader();
             Parent root = fxmlLoader.load(getClass().getResource("About.fxml").openStream());
-            Scene scene = new Scene(root, 400, 350);
+            Scene scene = new Scene(root, 800, 550);
             scene.getStylesheets().add(getClass().getResource("About.css").toExternalForm());
             stage.setScene(scene);
             AboutController a = fxmlLoader.getController();
@@ -66,37 +71,39 @@ public class MyViewController implements IView, Observer {
     }
 
     public void SetStageHelpEvent(ActionEvent actionEvent) {
-        String content = "Maze Rules:" + '\n' + "1. The character can be moved only to empty cells (non-wall cells)" + '\n' +
-                "2. In order to solve the maze, you need to reach the goal cell" + '\n' + '\n' +
-                "Game Instructions:" + '\n' + "Use the NumPad numbers to move the character:" + '\n' +
-                "UP - 8       DOWN - 2" + '\n' + "RIGHT - 6       LEFT - 4" + '\n'
-                + "Diagonal Moves:" + '\n' + "UP-LEFT - 7       DOWN-LEFT - 1" + '\n' + "UP-RIGHT - 9       DOWN-RIGHT - 3" + '\n';
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.getDialogPane().setContent(new Label(content));
-        DialogPane dialogPane = alert.getDialogPane();
-        dialogPane.setMinHeight(Region.USE_PREF_SIZE);
-        dialogPane.getStylesheets().add(
-                getClass().getResource("Help.css").toExternalForm());
-        dialogPane.getStyleClass().add("myDialog");
-        alert.setResizable(true);
-        alert.setHeaderText("                    Help");
-        alert.setTitle("Help");
 
-        alert.show();
+        try {
+            Stage stage = new Stage();
+            stage.setTitle("Help");
+            FXMLLoader fxmlLoader = new FXMLLoader();
+            Parent root = fxmlLoader.load(getClass().getResource("Help.fxml").openStream());
+            Scene scene = new Scene(root, 800, 550);
+            scene.getStylesheets().add(getClass().getResource("Help.css").toExternalForm());
+            stage.setScene(scene);
+            HelpController a = fxmlLoader.getController();
+            stage.initModality(Modality.APPLICATION_MODAL); //Lock the window until it closes
+            stage.show();
+        } catch (Exception e) {
+
+        }
     }
 
     public void SetStagePropertiesEvent(ActionEvent actionEvent) {
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        DialogPane dialogPane = alert.getDialogPane();
-        dialogPane.getStylesheets().add(
-                getClass().getResource("ViewStyle.css").toExternalForm());
-        dialogPane.getStyleClass().add("myDialog");
-        alert.setHeaderText("             Properties");
-        alert.setTitle("Properties");
-        String mazeType = Server.Configurations.getProperty("mazeType");
-        String searchingAlgorithm = Server.Configurations.getProperty("searchingAlgorithm");
-        alert.setContentText("Maze type: " + mazeType + '\n' + "Searching Algorithm: " + searchingAlgorithm);
-        Optional<ButtonType> result = alert.showAndWait();
+
+        try {
+            Stage stage = new Stage();
+            stage.setTitle("Properties");
+            FXMLLoader fxmlLoader = new FXMLLoader();
+            Parent root = fxmlLoader.load(getClass().getResource("Properties.fxml").openStream());
+            Scene scene = new Scene(root, 800, 550);
+            scene.getStylesheets().add(getClass().getResource("Properties.css").toExternalForm());
+            stage.setScene(scene);
+            PropertiesController a = fxmlLoader.getController();
+            stage.initModality(Modality.APPLICATION_MODAL); //Lock the window until it closes
+            stage.show();
+        } catch (Exception e) {
+
+        }
     }
 
     public void SetStageNewEvent(ActionEvent actionEvent) {
@@ -115,6 +122,33 @@ public class MyViewController implements IView, Observer {
             actionEvent.consume();
         }
     }
+
+    /*public void SetPlayPauseEvent(ActionEvent actionEvent) {
+        Image PlayButtonImage = new Image(getClass().getResourceAsStream("Play 50x50.png"));
+        Image PauseButtonImage = new Image(getClass().getResourceAsStream("Pause 50x50.png"));
+        ImageView imageViewPlay = new ImageView(PlayButtonImage);
+        ImageView imageViewPause = new ImageView(PauseButtonImage);
+
+        btn_playpause.setGraphic(imageViewPlay);
+        btn_playpause.setOnAction(new EventHandler() {
+            public void handle(ActionEvent e) {
+                updateValues();
+                MediaPlayer.Status status = mediaPlayer.getStatus();
+
+                if (status == MediaPlayer.Status.PAUSED
+                        || status == MediaPlayer.Status.READY
+                        || status == MediaPlayer.Status.STOPPED) {
+
+                    mediaPlayer.play();
+                    playButton.setGraphic(imageViewPlay);
+
+                } else {
+                    mediaPlayer.pause();
+                    playButton.setGraphic(imageViewPause);
+                }
+            }
+        });
+    }*/
 
     public void setOnCloseRequest(ActionEvent actionEvent) {
 
@@ -198,6 +232,11 @@ public class MyViewController implements IView, Observer {
             Alert goodJob = new Alert(Alert.AlertType.INFORMATION);
             goodJob.setContentText("NICE :)\n You Win!");
             goodJob.showAndWait();
+
+            /* music for winning */
+            Media sound = new Media(new File("Resources/Muse.mp3").toURI().toString());
+            MediaPlayer mediaPlayer = new MediaPlayer(sound);
+            mediaPlayer.play();
 
 
         }

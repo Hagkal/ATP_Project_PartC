@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import View.MazeDisplayer?>
+<?import View.PlayerDisplay?>
 <?import View.SolutionDisplayer?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
@@ -23,12 +24,7 @@
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 
-
-<?import View.MazeDisplayer?>
-<?import View.SolutionDisplayer?>
-<?import View.PlayerDisplay?>
-<BorderPane fx:id="borderPane" onKeyPressed="#movePlayer" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="569.0" prefWidth="875.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="View.MyViewController">
+<BorderPane fx:id="borderPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onKeyPressed="#movePlayer" prefHeight="569.0" prefWidth="875.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="View.MyViewController">
     <top>
         <VBox prefHeight="34.0" prefWidth="875.0" BorderPane.alignment="CENTER">
             <children>
@@ -37,8 +33,8 @@
                         <Menu mnemonicParsing="false" text="File">
                             <items>
                                 <MenuItem fx:id="menu_inside_new" mnemonicParsing="false" onAction="#SetStageNewEvent" text="New" />
-                                <MenuItem onAction="#saveGame" mnemonicParsing="false" text="Save" />
-                                <MenuItem onAction="#loadGame" mnemonicParsing="false" text="Load" />
+                                <MenuItem mnemonicParsing="false" onAction="#saveGame" text="Save" />
+                                <MenuItem mnemonicParsing="false" onAction="#loadGame" text="Load" />
                                 <MenuItem mnemonicParsing="false" text="Exit" />
                             </items>
                         </Menu>
@@ -115,15 +111,16 @@
                             </stops>
                         </LinearGradient>
                     </fill></Rectangle>
-                <MazeDisplayer fx:id="mazeDisplay" height="356.0" width="406.0"/>
-                <SolutionDisplayer fx:id="solutionDisplay" height="356.0" width="406.0"/>
-                <PlayerDisplay fx:id="playerDisplay" height="356.0" width="406.0"/>
+                <MazeDisplayer fx:id="mazeDisplay" height="356.0" width="406.0" />
+                <SolutionDisplayer fx:id="solutionDisplay" height="356.0" width="406.0" />
+                <PlayerDisplay fx:id="playerDisplay" height="356.0" width="406.0" />
             </children></Pane>
     </center>
     <bottom>
         <HBox prefHeight="19.0" prefWidth="600.0" BorderPane.alignment="CENTER">
             <children>
                 <Label text="Status: " />
+            <Button fx:id="btn_music" mnemonicParsing="false" text="Play/Pause" />
             </children></HBox>
     </bottom>
     <right>
