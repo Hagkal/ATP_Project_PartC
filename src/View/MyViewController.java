@@ -52,6 +52,7 @@ public class MyViewController implements IView, Observer {
     public javafx.scene.control.Label lbl_playerRow;
     public javafx.scene.control.Label lbl_playerCol;
     public javafx.scene.image.ImageView img_music;
+    public javafx.scene.control.Button btn_music;
     Media startMusic = new Media(new File("Resources/Muse.mp3").toURI().toString());
     Media winnerMusic = new Media(new File("Resources/gameover.mp3").toURI().toString());
     MediaPlayer mediaPlayerWinner = new MediaPlayer(winnerMusic);
@@ -132,7 +133,7 @@ public class MyViewController implements IView, Observer {
         }*/
     }
 
-    public void SetPlayPauseEvent(ActionEvent actionEvent) {
+    /*public void SetPlayPauseEvent(ActionEvent actionEvent) {
 
         img_music.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
@@ -152,7 +153,26 @@ public class MyViewController implements IView, Observer {
                 }
             }
         });
-    }
+    }*/
+
+    public void SetPlayPauseEvent(ActionEvent actionEvent) {
+
+        MediaPlayer.Status status = mediaPlayerStart.getStatus();
+
+        if (status == MediaPlayer.Status.PAUSED
+                || status == MediaPlayer.Status.READY
+                || status == MediaPlayer.Status.STOPPED) {
+
+            mediaPlayerStart.play();
+            //img_music.setImage(PlayButtonImage);
+            btn_music.setText("Pause");
+
+        } else {
+            mediaPlayerStart.pause();
+            //img_music.setImage(PauseButtonImage);
+            btn_music.setText("Play");
+        }
+}
 
     public void setOnCloseRequest(ActionEvent actionEvent) {
 
@@ -200,7 +220,8 @@ public class MyViewController implements IView, Observer {
             btn_generateButton.setDisable(false);
             btn_solveButton.setDisable(false);
             /** Background music **/
-            img_music.setImage(PlayButtonImage);
+            //img_music.setImage(PlayButtonImage);
+            btn_music.setText("Pause");
             mediaPlayerWinner.stop();
             mediaPlayerStart.play();
 
