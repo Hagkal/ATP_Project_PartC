@@ -51,6 +51,11 @@ public class MyViewController implements IView, Observer {
     public javafx.scene.control.Label lbl_playerRow;
     public javafx.scene.control.Label lbl_playerCol;
     public javafx.scene.control.Button btn_playpause;
+    Media startMusic = new Media(new File("Resources/Muse.mp3").toURI().toString());
+    Media winnerMusic = new Media(new File("Resources/gameover.mp3").toURI().toString());
+    MediaPlayer mediaPlayerWinner = new MediaPlayer(winnerMusic);
+    MediaPlayer mediaPlayerStart = new MediaPlayer(startMusic);
+
 
     public void SetStageAboutEvent(ActionEvent actionEvent) {
 
@@ -196,6 +201,8 @@ public class MyViewController implements IView, Observer {
             viewModel.generateMaze(row, col);
             btn_generateButton.setDisable(false);
             btn_solveButton.setDisable(false);
+            /** Background music **/
+            mediaPlayerStart.play();
 
         } catch (NumberFormatException e){
             //e.printStackTrace();
@@ -230,16 +237,13 @@ public class MyViewController implements IView, Observer {
             /* functionality for finished game!
              * maybe cancel all other current maze related operations
              */
+            
+            /* music for winning */
+            mediaPlayerStart.stop();
+            mediaPlayerWinner.play();
             Alert goodJob = new Alert(Alert.AlertType.INFORMATION);
             goodJob.setContentText("NICE :)\n You Win!");
             goodJob.showAndWait();
-
-            /* music for winning */
-            Media sound = new Media(new File("Resources/gameover.mp3").toURI().toString());
-            MediaPlayer mediaPlayer = new MediaPlayer(sound);
-            mediaPlayer.play();
-
-
         }
     }
 

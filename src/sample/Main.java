@@ -66,11 +66,6 @@ public class Main extends Application {
         }); // taking care of proper exit
         primaryStage.show();
 
-        /** Background music **/
-        Media sound = new Media(new File("Resources/Muse.mp3").toURI().toString());
-        MediaPlayer mediaPlayer = new MediaPlayer(sound);
-        mediaPlayer.play();
-
     }
 
 
