@@ -12,6 +12,7 @@
 <?import javafx.scene.control.Separator?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.effect.Reflection?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
@@ -117,10 +118,10 @@
             </children></Pane>
     </center>
     <bottom>
-        <HBox prefHeight="19.0" prefWidth="600.0" BorderPane.alignment="CENTER">
+        <HBox prefHeight="18.0" prefWidth="875.0" BorderPane.alignment="CENTER">
             <children>
                 <Label text="Status: " />
-            <Button fx:id="btn_music" mnemonicParsing="false" text="Play/Pause" />
+            <ImageView fx:id="img_music" fitHeight="40.0" fitWidth="43.0" onMouseClicked="#SetPlayPauseEvent" pickOnBounds="true" preserveRatio="true" />
             </children></HBox>
     </bottom>
     <right>

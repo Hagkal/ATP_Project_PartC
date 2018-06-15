@@ -4,6 +4,8 @@ import algorithms.mazeGenerators.Maze;
 import algorithms.search.AState;
 import algorithms.search.MazeState;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
 
 public class PlayerDisplay extends Display {
@@ -15,7 +17,7 @@ public class PlayerDisplay extends Display {
     public void display(Object... o){
         GraphicsContext gc = getGraphicsContext2D();
         gc.clearRect(0, 0, getWidth(), getHeight());
-        gc.setFill(Color.WHITE);
+
 
         if (!(o[0] instanceof Maze) || !(o[1] instanceof Integer) || !(o[2] instanceof Integer))
             return;
@@ -25,8 +27,11 @@ public class PlayerDisplay extends Display {
 
         double cellHeight = getHeight() / maze.length;
         double cellWidth = getWidth() / maze[0].length;
-
-        gc.fillRect((Integer)o[2] * cellWidth, (Integer)o[1] * cellHeight, cellWidth, cellHeight);
+        ImageView player = new ImageView();
+        Image playerImage = new Image("file:Resources/lbj.jpg");
+        //gc.setFill(Color.WHITE);
+        gc.drawImage(playerImage, (Integer)o[2] * cellWidth, (Integer)o[1] * cellHeight, cellWidth, cellHeight);
+        //gc.fillRect((Integer)o[2] * cellWidth, (Integer)o[1] * cellHeight, cellWidth, cellHeight);
 
     }
 

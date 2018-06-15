@@ -14,6 +14,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Region;
 import javafx.scene.media.Media;
@@ -50,11 +51,13 @@ public class MyViewController implements IView, Observer {
     public javafx.scene.control.Button btn_solveButton;
     public javafx.scene.control.Label lbl_playerRow;
     public javafx.scene.control.Label lbl_playerCol;
-    public javafx.scene.control.Button btn_playpause;
+    public javafx.scene.image.ImageView img_music;
     Media startMusic = new Media(new File("Resources/Muse.mp3").toURI().toString());
     Media winnerMusic = new Media(new File("Resources/gameover.mp3").toURI().toString());
     MediaPlayer mediaPlayerWinner = new MediaPlayer(winnerMusic);
     MediaPlayer mediaPlayerStart = new MediaPlayer(startMusic);
+    Image PlayButtonImage = new Image("file:Resources/play.jpg");
+    Image PauseButtonImage = new Image("file:Resources/stop.jpg");
 
 
     public void SetStageAboutEvent(ActionEvent actionEvent) {
@@ -129,32 +132,27 @@ public class MyViewController implements IView, Observer {
         }*/
     }
 
-    /*public void SetPlayPauseEvent(ActionEvent actionEvent) {
-        Image PlayButtonImage = new Image(getClass().getResourceAsStream("Play 50x50.png"));
-        Image PauseButtonImage = new Image(getClass().getResourceAsStream("Pause 50x50.png"));
-        ImageView imageViewPlay = new ImageView(PlayButtonImage);
-        ImageView imageViewPause = new ImageView(PauseButtonImage);
+    public void SetPlayPauseEvent(ActionEvent actionEvent) {
 
-        btn_playpause.setGraphic(imageViewPlay);
-        btn_playpause.setOnAction(new EventHandler() {
-            public void handle(ActionEvent e) {
-                updateValues();
-                MediaPlayer.Status status = mediaPlayer.getStatus();
+        img_music.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                MediaPlayer.Status status = mediaPlayerStart.getStatus();
 
                 if (status == MediaPlayer.Status.PAUSED
                         || status == MediaPlayer.Status.READY
                         || status == MediaPlayer.Status.STOPPED) {
 
-                    mediaPlayer.play();
-                    playButton.setGraphic(imageViewPlay);
+                    mediaPlayerStart.play();
+                    img_music.setImage(PlayButtonImage);
 
                 } else {
-                    mediaPlayer.pause();
-                    playButton.setGraphic(imageViewPause);
+                    mediaPlayerStart.pause();
+                    img_music.setImage(PauseButtonImage);
                 }
             }
         });
-    }*/
+    }
 
     public void setOnCloseRequest(ActionEvent actionEvent) {
 
@@ -202,6 +200,8 @@ public class MyViewController implements IView, Observer {
             btn_generateButton.setDisable(false);
             btn_solveButton.setDisable(false);
             /** Background music **/
+            img_music.setImage(PlayButtonImage);
+            mediaPlayerWinner.stop();
             mediaPlayerStart.play();
 
         } catch (NumberFormatException e){
@@ -237,7 +237,7 @@ public class MyViewController implements IView, Observer {
             /* functionality for finished game!
              * maybe cancel all other current maze related operations
              */
-            
+
             /* music for winning */
             mediaPlayerStart.stop();
             mediaPlayerWinner.play();

@@ -49,6 +49,8 @@
 .dialog-pane .button{
    -fx-background-color: linear-gradient(#dc9556, #ab4642);
    -fx-background-radius: 10;
+   -fx-background-repeat: no-repeat;
+           -fx-background-size: cover, auto;
  }
 
 .dialog-pane .button:hover{
