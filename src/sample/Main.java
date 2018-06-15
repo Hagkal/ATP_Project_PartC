@@ -41,12 +41,13 @@ public class Main extends Application {
         FXMLLoader fxml = new FXMLLoader(getClass().getResource("../View/MyView.fxml"));
         Parent root = fxml.load();
         primaryStage.setTitle("Wasssup Nigga");
-        Scene scene = new Scene(root, 600, 400);
+        Scene scene = new Scene(root, 800, 500);
         scene.getStylesheets().add(getClass().getResource("../View/ViewStyle.css").toExternalForm());
         primaryStage.setScene(scene);
         // ----------
         MyViewController view = fxml.getController();
         view.setViewModel(vm);
+        view.setResizeEvent(scene);
         vm.addObserver(view);
         // ----------
         primaryStage.setOnCloseRequest(new EventHandler<WindowEvent>() {

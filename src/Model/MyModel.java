@@ -221,7 +221,7 @@ public class MyModel extends Observable implements IModel {
                     && playerCol == maze.getGoalPosition().getColumnIndex())
                 finished = true;
             setChanged();
-            notifyObservers(finished ? "playerDisplay, WINNER" : "playerDisplay");
+            notifyObservers(finished ? "playerDisplay, WINNER, Paint" : "playerDisplay");
         }
     }
 

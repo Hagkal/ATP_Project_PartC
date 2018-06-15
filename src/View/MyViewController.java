@@ -5,6 +5,8 @@ import ViewModel.MyViewModel;
 import algorithms.search.Solution;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -15,6 +17,7 @@ import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.Region;
 import javafx.scene.text.Text;
 import javafx.stage.Modality;
@@ -29,6 +32,7 @@ import javafx.stage.WindowEvent;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
 import sample.Main;
+
 import java.util.Observable;
 import java.util.Observer;
 import java.util.Optional;
@@ -40,12 +44,15 @@ public class MyViewController implements IView, Observer {
     public Display mazeDisplay;
     public Display solutionDisplay;
     public Display playerDisplay;
+    public Display winDisplay;
+    public Pane pane;
     public javafx.scene.control.TextField txt_rowsFromUser;
     public javafx.scene.control.TextField txt_colsFromUser;
     public javafx.scene.control.Button btn_generateButton;
     public javafx.scene.control.Button btn_solveButton;
     public javafx.scene.control.Label lbl_playerRow;
     public javafx.scene.control.Label lbl_playerCol;
+    public javafx.scene.layout.BorderPane lyt_mainPane;
 
     public void SetStageAboutEvent(ActionEvent actionEvent) {
 
@@ -109,7 +116,7 @@ public class MyViewController implements IView, Observer {
         alert.setHeaderText("              New Game");
         alert.setTitle("New Game");
         Optional<ButtonType> result = alert.showAndWait();
-        if (result.get() == ButtonType.OK){
+        if (result.get() == ButtonType.OK) {
             generateMaze();
         } else {
             actionEvent.consume();
@@ -121,7 +128,7 @@ public class MyViewController implements IView, Observer {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setContentText("Are you sure you want to leave?");
         Optional<ButtonType> result = alert.showAndWait();
-        if (result.get() == ButtonType.OK){
+        if (result.get() == ButtonType.OK) {
             // ... user chose OK
             viewModel.exitGame();
             System.exit(0);
@@ -135,9 +142,10 @@ public class MyViewController implements IView, Observer {
 
     /**
      * a method to set the ViewModel of the application
+     *
      * @param given - the given ViewModel
      */
-    public void setViewModel(MyViewModel given){
+    public void setViewModel(MyViewModel given) {
         this.viewModel = given;
         setProperties();
     }
@@ -148,13 +156,17 @@ public class MyViewController implements IView, Observer {
     private void setProperties() {
         lbl_playerRow.textProperty().bind(viewModel.playerRowPropertyProperty());
         lbl_playerCol.textProperty().bind(viewModel.playerColPropertyProperty());
+/*
+        btn_generateButton.prefHeightProperty().bind(lyt_mainPane.getLeft().layoutYProperty());
+        btn_generateButton.prefWidthProperty().bind(lyt_mainPane.getLeft().layoutXProperty());
+        */
     }
 
     /**
      * a method to generate a maze with the sizes inserted
      */
     public void generateMaze() {
-        try{
+        try {
             int row = Integer.valueOf(txt_rowsFromUser.getText());
             int col = Integer.valueOf(txt_colsFromUser.getText());
             btn_generateButton.setDisable(true);
@@ -162,7 +174,7 @@ public class MyViewController implements IView, Observer {
             btn_generateButton.setDisable(false);
             btn_solveButton.setDisable(false);
 
-        } catch (NumberFormatException e){
+        } catch (NumberFormatException e) {
             //e.printStackTrace();
             popProblem("Please insert a numeric value to maze sizes!");
         }
@@ -172,9 +184,10 @@ public class MyViewController implements IView, Observer {
 
     /**
      * a method that will move the player
+     *
      * @param pressed - the key pressed to move the player
      */
-    public void movePlayer(KeyEvent pressed){
+    public void movePlayer(KeyEvent pressed) {
         viewModel.movePlayer(pressed.getCode());
         pressed.consume();
     }
@@ -191,23 +204,28 @@ public class MyViewController implements IView, Observer {
         if (o == viewModel && args.contains("playerDisplay"))
             playerDisplay.display(viewModel.getMaze(), viewModel.getPlayerRow(), viewModel.getPlayerCol());
 
-        if (o == viewModel && args.contains("WINNER")){
+        if (o == viewModel && args.contains("WINNER")) {
             /* functionality for finished game!
              * maybe cancel all other current maze related operations
              */
-            Alert goodJob = new Alert(Alert.AlertType.INFORMATION);
-            goodJob.setContentText("NICE :)\n You Win!");
-            goodJob.showAndWait();
 
-
+            if (args.contains("Paint")) {
+                winDisplay.display("Won");
+                Alert goodJob = new Alert(Alert.AlertType.INFORMATION);
+                goodJob.setContentText("NICE :)\n You Win!");
+                goodJob.showAndWait();
+            }
+            else
+                winDisplay.display("clear");
         }
     }
 
     /**
      * a method to pop errors with a description
+     *
      * @param description - of the error occured
      */
-    private void popProblem(String description){
+    private void popProblem(String description) {
         Alert prob = new Alert(Alert.AlertType.ERROR);
         prob.setContentText(description);
         prob.showAndWait();
@@ -215,6 +233,7 @@ public class MyViewController implements IView, Observer {
 
     /**
      * a method to solve the maze
+     *
      * @param actionEvent - ignored click event
      */
     public void solveMaze(ActionEvent actionEvent) {
@@ -227,6 +246,7 @@ public class MyViewController implements IView, Observer {
 
     /**
      * a method to save the current game
+     *
      * @param actionEvent - ignored
      */
     public void saveGame(ActionEvent actionEvent) {
@@ -239,19 +259,19 @@ public class MyViewController implements IView, Observer {
     /**
      * a method to load a previously saved game
      */
-    public void loadGame(){
+    public void loadGame() {
         viewModel.loadGame();
     }
 
 
     public void dragOver(MouseDragEvent mouseDragEvent) {
-        if (viewModel.getMaze()==null)
+        if (viewModel.getMaze() == null)
             return;
         System.out.println("In the method");
         double mouseX = mouseDragEvent.getX() / playerDisplay.getWidth();
         double mouseY = mouseDragEvent.getY() / playerDisplay.getHeight();
 
-        if (Math.abs(viewModel.getPlayerRow() - mouseX) < 2 || Math.abs(viewModel.getPlayerCol() - mouseY) < 2){
+        if (Math.abs(viewModel.getPlayerRow() - mouseX) < 2 || Math.abs(viewModel.getPlayerCol() - mouseY) < 2) {
             if (mouseX < viewModel.getPlayerCol())
                 viewModel.movePlayer(KeyCode.LEFT);
 
@@ -265,6 +285,27 @@ public class MyViewController implements IView, Observer {
                 viewModel.movePlayer(KeyCode.DOWN);
         }
 
+    }
+
+    public void setResizeEvent(Scene scene) {
+        scene.widthProperty().addListener(new ChangeListener<Number>() {
+            @Override
+            public void changed(ObservableValue<? extends Number> observableValue, Number oldSceneWidth, Number newSceneWidth) {
+                display(newSceneWidth.doubleValue(), scene.getHeight());
+            }
+        });
+        scene.heightProperty().addListener(new ChangeListener<Number>() {
+            @Override
+            public void changed(ObservableValue<? extends Number> observableValue, Number oldSceneHeight, Number newSceneHeight) {
+                display(scene.getWidth(), newSceneHeight.doubleValue());
+            }
+        });
+    }
+
+    public void display(double width, double height) {
+        mazeDisplay.display(viewModel.getMaze());
+        solutionDisplay.display(viewModel.getMaze(), viewModel.getSolution());
+        playerDisplay.display(viewModel.getMaze(), viewModel.getPlayerRow(), viewModel.getPlayerCol());
     }
 }
 
