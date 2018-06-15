@@ -79,8 +79,8 @@
                         <Button fx:id="btn_solveButton" defaultButton="true" disable="true" mnemonicParsing="false" onAction="#solveMaze" text="Solve Maze" GridPane.rowIndex="3" />
                         <Label text="Rows" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                         <Label text="Columns" GridPane.columnIndex="1" />
-                        <TextField fx:id="txt_rowsFromUser" text="50" GridPane.rowIndex="1" />
-                        <TextField fx:id="txt_colsFromUser" text="50" />
+                        <TextField fx:id="txt_rowsFromUser" text="10" GridPane.rowIndex="1" />
+                        <TextField fx:id="txt_colsFromUser" text="10" />
                   <Label text="Current Position:" textAlignment="CENTER" GridPane.rowIndex="4">
                      <font>
                         <Font name="System Bold" size="12.0" />
@@ -102,7 +102,7 @@
     <center>
         <Pane fx:id="pane" BorderPane.alignment="CENTER">
             <children>
-                <Rectangle arcHeight="5.0" arcWidth="5.0" height="${pane.height}" stroke="BLACK" strokeType="INSIDE" width="${pane.width}">
+                <Rectangle arcHeight="5.0" arcWidth="5.0" height="${pane.height}" width="${pane.width}" stroke="BLACK" strokeType="INSIDE" >
                     <fill>
                         <LinearGradient endX="1.0" endY="1.0">
                             <stops>

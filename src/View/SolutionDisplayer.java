@@ -31,6 +31,9 @@ public class SolutionDisplayer extends Display {
                 return;
 
             MazeState mState = (MazeState) state;
+
+            if (mState.getCurrentPosition().equals(m.getGoalPosition()))
+                return;
             int colorRow = mState.getCurrentPosition().getRowIndex();
             int colorCol = mState.getCurrentPosition().getColumnIndex();
             gc.fillRect(colorCol * cellWidth, colorRow * cellHeight, cellWidth, cellHeight);

@@ -118,9 +118,8 @@ public class MyViewController implements IView, Observer {
         Optional<ButtonType> result = alert.showAndWait();
         if (result.get() == ButtonType.OK) {
             generateMaze();
-        } else {
-            actionEvent.consume();
         }
+        actionEvent.consume();
     }
 
     public void setOnCloseRequest(ActionEvent actionEvent) {
@@ -165,7 +164,7 @@ public class MyViewController implements IView, Observer {
     /**
      * a method to generate a maze with the sizes inserted
      */
-    public void generateMaze() {
+    private void generateMaze() {
         try {
             int row = Integer.valueOf(txt_rowsFromUser.getText());
             int col = Integer.valueOf(txt_colsFromUser.getText());
@@ -173,6 +172,7 @@ public class MyViewController implements IView, Observer {
             viewModel.generateMaze(row, col);
             btn_generateButton.setDisable(false);
             btn_solveButton.setDisable(false);
+
 
         } catch (NumberFormatException e) {
             //e.printStackTrace();
@@ -242,6 +242,7 @@ public class MyViewController implements IView, Observer {
         viewModel.solve();
         btn_solveButton.setDisable(false);
         btn_generateButton.setDisable(false);
+        actionEvent.consume();
     }
 
     /**
@@ -254,13 +255,17 @@ public class MyViewController implements IView, Observer {
             popProblem("You must generate a maze before saving it!");
         else
             viewModel.saveGame();
+
+        actionEvent.consume();
     }
 
     /**
      * a method to load a previously saved game
      */
-    public void loadGame() {
-        viewModel.loadGame();
+    public void loadGame(ActionEvent actionEvent) {
+        if (viewModel.loadGame())
+            btn_solveButton.setDisable(false);
+        actionEvent.consume();
     }
 
 
@@ -287,6 +292,7 @@ public class MyViewController implements IView, Observer {
 
     }
 
+
     public void setResizeEvent(Scene scene) {
         scene.widthProperty().addListener(new ChangeListener<Number>() {
             @Override
@@ -302,7 +308,12 @@ public class MyViewController implements IView, Observer {
         });
     }
 
-    public void display(double width, double height) {
+
+    public void setMaxMinEvent(Stage stage){
+        stage.maximizedProperty().addListener((observable, oldValue, newValue) -> display(0, 0));
+    }
+
+    private void display(double width, double height) {
         mazeDisplay.display(viewModel.getMaze());
         solutionDisplay.display(viewModel.getMaze(), viewModel.getSolution());
         playerDisplay.display(viewModel.getMaze(), viewModel.getPlayerRow(), viewModel.getPlayerCol());
