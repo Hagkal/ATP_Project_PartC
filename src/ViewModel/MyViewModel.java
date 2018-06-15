@@ -100,8 +100,8 @@ public class MyViewModel extends Observable implements Observer {
     /**
      * a method to load a game
      */
-    public void loadGame() {
-        model.loadGame();
+    public boolean loadGame() {
+        return model.loadGame();
     }
 
     public void dragOver() {

@@ -9,7 +9,6 @@
 <?import javafx.scene.control.Menu?>
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
-<?import javafx.scene.control.Separator?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.effect.Reflection?>
 <?import javafx.scene.layout.BorderPane?>
@@ -24,9 +23,12 @@
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane fx:id="borderPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onKeyPressed="#movePlayer" prefHeight="569.0" prefWidth="875.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="View.MyViewController">
+
+<?import View.WinDisplay?>
+<BorderPane fx:id="lyt_mainPane" onKeyPressed="#movePlayer" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="View.MyViewController">
     <top>
-        <VBox prefHeight="34.0" prefWidth="875.0" BorderPane.alignment="CENTER">
+        <VBox BorderPane.alignment="CENTER">
             <children>
                 <MenuBar>
                     <menus>
@@ -79,8 +81,8 @@
                         <Button fx:id="btn_solveButton" defaultButton="true" disable="true" mnemonicParsing="false" onAction="#solveMaze" text="Solve Maze" GridPane.rowIndex="3" />
                         <Label text="Rows" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                         <Label text="Columns" GridPane.columnIndex="1" />
-                        <TextField fx:id="txt_rowsFromUser" text="100" GridPane.rowIndex="1" />
-                        <TextField fx:id="txt_colsFromUser" text="100" />
+                        <TextField fx:id="txt_rowsFromUser" text="10" GridPane.rowIndex="1" />
+                        <TextField fx:id="txt_colsFromUser" text="10" />
                   <Label text="Current Position:" textAlignment="CENTER" GridPane.rowIndex="4">
                      <font>
                         <Font name="System Bold" size="12.0" />
@@ -100,9 +102,9 @@
         </VBox>
     </left>
     <center>
-        <Pane prefHeight="356.0" prefWidth="406.0" BorderPane.alignment="CENTER">
+        <Pane fx:id="pane" BorderPane.alignment="CENTER">
             <children>
-                <Rectangle arcHeight="5.0" arcWidth="5.0" height="356.0" stroke="BLACK" strokeType="INSIDE" width="406.0">
+                <Rectangle arcHeight="5.0" arcWidth="5.0" height="${pane.height}" width="${pane.width}" stroke="BLACK" strokeType="INSIDE" >
                     <fill>
                         <LinearGradient endX="1.0" endY="1.0">
                             <stops>
@@ -110,24 +112,27 @@
                                 <Stop color="#d3dce421" offset="1.0" />
                             </stops>
                         </LinearGradient>
-                    </fill></Rectangle>
-                <MazeDisplayer fx:id="mazeDisplay" height="356.0" width="406.0" />
-                <SolutionDisplayer fx:id="solutionDisplay" height="356.0" width="406.0" />
-                <PlayerDisplay fx:id="playerDisplay" height="356.0" width="406.0" />
-            </children></Pane>
+                    </fill>
+                </Rectangle>
+                <MazeDisplayer fx:id="mazeDisplay" height="${pane.height}" width="${pane.width}" />
+                <SolutionDisplayer fx:id="solutionDisplay" height="${pane.height}" width="${pane.width}" />
+                <PlayerDisplay fx:id="playerDisplay" height="${pane.height}" width="${pane.width}" />
+                <WinDisplay fx:id="winDisplay" height="${pane.height}" width="${pane.width}"/>
+            </children>
+         <padding>
+            <Insets bottom="100.0" left="100.0" right="100.0" top="100.0" />
+         </padding></Pane>
     </center>
     <bottom>
-        <HBox prefHeight="18.0" prefWidth="875.0" BorderPane.alignment="CENTER">
+        <HBox prefHeight="19.0" BorderPane.alignment="CENTER">
             <children>
                 <Label text="Status: " />
             <Button fx:id="btn_music" mnemonicParsing="false" onAction="#SetPlayPauseEvent" text="Play" />
             </children></HBox>
     </bottom>
     <right>
-        <Separator orientation="VERTICAL" prefHeight="356.0" prefWidth="11.0" BorderPane.alignment="CENTER">
-            <effect>
-                <Reflection />
-            </effect>
-        </Separator>
     </right>
+   <padding>
+      <Insets right="5.0" />
+   </padding>
 </BorderPane>

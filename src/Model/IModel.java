@@ -29,7 +29,7 @@ public interface IModel {
     void saveGame();
 
     // load saved game state
-    void loadGame();
+    boolean loadGame();
 
     // defining settings
     //public void setNewSettings(String[] args);

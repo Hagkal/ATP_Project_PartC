@@ -19,6 +19,7 @@ public class MyModel extends Observable implements IModel {
 
     private Maze maze = null;
     private Solution solved = null;
+    private boolean solReached = false;
     private int playerRow;
     private int playerCol;
     private Server generateServer;
@@ -70,6 +71,8 @@ public class MyModel extends Observable implements IModel {
                         maze = new Maze(decompressedMaze);
                         playerRow = maze.getStartPosition().getRowIndex();
                         playerCol = maze.getStartPosition().getColumnIndex();
+                        solReached = false;
+
                         // notify when generation is completed
                         setChanged();
                         notifyObservers("mazeDisplay, solutionDisplay, playerDisplay");
@@ -144,6 +147,8 @@ public class MyModel extends Observable implements IModel {
 
     @Override
     public void movePlayer(KeyCode step) {
+        if (solReached)
+            return;
         boolean moved = false;
         switch (step){
             case NUMPAD8: // up
@@ -216,12 +221,11 @@ public class MyModel extends Observable implements IModel {
                 break;
         }
         if (moved){
-            boolean finished = false;
             if (playerRow == maze.getGoalPosition().getRowIndex()
                     && playerCol == maze.getGoalPosition().getColumnIndex())
-                finished = true;
+                solReached = true;
             setChanged();
-            notifyObservers(finished ? "playerDisplay, WINNER" : "playerDisplay");
+            notifyObservers(solReached ? "playerDisplay, WINNER, Paint" : "playerDisplay");
         }
     }
 
@@ -268,7 +272,7 @@ public class MyModel extends Observable implements IModel {
     }
 
     @Override
-    public void loadGame() {
+    public boolean loadGame() {
 
         FileChooser fc = new FileChooser();
         fc.setTitle("Load Game");
@@ -283,17 +287,22 @@ public class MyModel extends Observable implements IModel {
                 maze = (Maze) gameLoader.readObject();
                 playerRow = maze.getStartPosition().getRowIndex();
                 playerCol = maze.getStartPosition().getColumnIndex();
+                solReached = false;
 
                 setChanged();
                 notifyObservers("mazeDisplay, solutionDisplay, playerDisplay");
+                return true;
 
             }
             catch (Exception e) {
                 Alert a = new Alert(Alert.AlertType.ERROR);
                 a.setContentText("Could not load game :(\n Please try again!");
                 a.showAndWait();
+                return false;
             }
+
         }
+        return false;
     }
 
     @Override
