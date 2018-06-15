@@ -57,7 +57,9 @@ public class MyViewController implements IView, Observer {
     public javafx.scene.control.Label lbl_playerRow;
     public javafx.scene.control.Label lbl_playerCol;
     public javafx.scene.image.ImageView img_music;
+    public javafx.scene.control.Button btn_music;
     public javafx.scene.layout.BorderPane lyt_mainPane;
+  
     Media startMusic = new Media(new File("Resources/Muse.mp3").toURI().toString());
     Media winnerMusic = new Media(new File("Resources/gameover.mp3").toURI().toString());
     MediaPlayer mediaPlayerWinner = new MediaPlayer(winnerMusic);
@@ -121,44 +123,29 @@ public class MyViewController implements IView, Observer {
 
     public void SetStageNewEvent(ActionEvent actionEvent) {
         generateMaze();
-        /*Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-        DialogPane dialogPane = alert.getDialogPane();
-        dialogPane.getStylesheets().add(
-                getClass().getResource("ViewStyle.css").toExternalForm());
-        dialogPane.getStyleClass().add("myDialog");
-        alert.setContentText("Are you sure you want to generate a new maze?");
-        alert.setHeaderText("              New Game");
-        alert.setTitle("New Game");
-        Optional<ButtonType> result = alert.showAndWait();
-        if (result.get() == ButtonType.OK) {
-            generateMaze();
-        */
-         actionEvent.consume();
+        actionEvent.consume();
     }
+
 
     public void SetPlayPauseEvent(ActionEvent actionEvent) {
 
-        img_music.setOnMouseClicked(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent event) {
-                MediaPlayer.Status status = mediaPlayerStart.getStatus();
+        MediaPlayer.Status status = mediaPlayerStart.getStatus();
 
-                if (status == MediaPlayer.Status.PAUSED
-                        || status == MediaPlayer.Status.READY
-                        || status == MediaPlayer.Status.STOPPED) {
+        if (status == MediaPlayer.Status.PAUSED
+                || status == MediaPlayer.Status.READY
+                || status == MediaPlayer.Status.STOPPED) {
 
-                    mediaPlayerStart.play();
-                    img_music.setImage(PlayButtonImage);
+            mediaPlayerStart.play();
+            //img_music.setImage(PlayButtonImage);
+            btn_music.setText("Pause");
 
-                } else {
-                    mediaPlayerStart.pause();
-                    img_music.setImage(PauseButtonImage);
-                }
-            }
-        });
+        } else {
+            mediaPlayerStart.pause();
+            //img_music.setImage(PauseButtonImage);
+            btn_music.setText("Play");
         }
-        actionEvent.consume();
-    }
+      actionEvent.consume();
+}
 
     public void setOnCloseRequest(ActionEvent actionEvent) {
 
@@ -211,7 +198,8 @@ public class MyViewController implements IView, Observer {
             btn_generateButton.setDisable(false);
             btn_solveButton.setDisable(false);
             /** Background music **/
-            img_music.setImage(PlayButtonImage);
+            //img_music.setImage(PlayButtonImage);
+            btn_music.setText("Pause");
             mediaPlayerWinner.stop();
             mediaPlayerStart.play();
 
