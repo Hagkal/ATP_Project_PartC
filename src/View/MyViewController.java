@@ -203,13 +203,10 @@ public class MyViewController implements IView, Observer {
             mediaPlayerWinner.stop();
             mediaPlayerStart.play();
 
-
         } catch (NumberFormatException e) {
             //e.printStackTrace();
             popProblem("Please insert a numeric value to maze sizes!");
         }
-
-
     }
 
     /**
@@ -242,9 +239,6 @@ public class MyViewController implements IView, Observer {
             /* music for winning */
             mediaPlayerStart.stop();
             mediaPlayerWinner.play();
-            Alert goodJob = new Alert(Alert.AlertType.INFORMATION);
-            goodJob.setContentText("NICE :)\n You Win!");
-            goodJob.showAndWait();
 
             if (args.contains("Paint")) {
                 winDisplay.display("Won");
