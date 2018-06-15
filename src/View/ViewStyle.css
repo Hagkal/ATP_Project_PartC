@@ -1,5 +1,9 @@
 .root{
-     -fx-background-color: linear-gradient(#383838, #838383);
+     /*-fx-background-color: linear-gradient(#383838, #838383);*/
+     -fx-background-image: url("../../../../Resources/back2.jpg");
+          -fx-background-position: left top, center;
+          -fx-background-repeat: no-repeat;
+          -fx-background-size: cover, auto;
      -fx-font-size: 10pt;
  }
 
@@ -16,9 +20,12 @@
 
 .dialog-pane > .content.label {
    -fx-padding: 0.5em 0.5em 0.5em 0.5em;
-   /*-fx-background-image: url("../../../../Resources/aboutus.jpeg");*/
-   -fx-background-color: red; /*(50, 33%, 25%, .75);*/
-   -fx-text-fill:black;
+   -fx-background-image: url("../../../../Resources/back3.jpg");
+        -fx-background-position: left top, center;
+        -fx-background-repeat: no-repeat;
+        -fx-background-size: cover, auto;
+        -fx-font-family: "Merienda";
+   -fx-text-fill:#ff7b2a;
    -fx-font-size:15.0px;
    -fx-font-weight: bold;
 }
@@ -32,7 +39,7 @@
   -fx-background-color: linear-gradient(#183838, #238383);
   -fx-background-radius:20px;
   -fx-font-family: "Georgia";
-  -fx-text-fill:black;
+  -fx-text-fill:#ff7b2a;
   -fx-text-align: center;
   -fx-font-size:25.0px;
 }
@@ -42,6 +49,8 @@
 .dialog-pane .button{
    -fx-background-color: linear-gradient(#dc9556, #ab4642);
    -fx-background-radius: 10;
+   -fx-background-repeat: no-repeat;
+           -fx-background-size: cover, auto;
  }
 
 .dialog-pane .button:hover{

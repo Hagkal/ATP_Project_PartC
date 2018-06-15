@@ -68,22 +68,6 @@ public class Main extends Application {
         }); // taking care of proper exit
         //primaryStage.maximizedProperty().addListener((observable, oldValue, newValue) -> {view.update(vm, "mazeDisplay, solutionDisplay, playerDisplay");});
         primaryStage.show();
-
-        /** Background music **/
-        /*Media sound = new Media(new File("Resources/Muse.mp3").toURI().toString());
-        MediaPlayer mediaPlayer = new MediaPlayer(sound);
-        mediaPlayer.play();*/
-
-        /** Change scene dimensions
-        primaryStage.getScene().heightProperty().addListener((observable, oldValue, newValue) -> {
-            double height = (double) newValue / 2;
-            primaryStage.getScene().getRoot().prefHeight(height);
-        });
-        primaryStage.widthProperty().addListener((observable, oldValue, newValue) -> {
-            double width = (double) newValue / 2;
-            primaryStage.getScene().getRoot().prefWidth(width);
-        });**/
-
     }
 
 

@@ -1,10 +1,14 @@
 package View;
 
+import javafx.event.ActionEvent;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import javafx.scene.image.Image;
 import javafx.scene.layout.Region;
 
 import java.net.URL;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 public class AboutController implements Initializable {
@@ -19,7 +23,9 @@ public class AboutController implements Initializable {
                 "Maze generation made by Prim's algorithm and solved by DFS algorithm." + '\n' + "The programmers behind this application:" + '\n' + "Hagai Kalinhoff and Omri Naor";
         lbl_about.setText(content);
         lbl_about.setMinWidth(Region.USE_PREF_SIZE);
+        lbl_about.setMinHeight(Region.USE_PREF_SIZE);
         Image img = new Image("file:Resources/aboutus.jpeg");
         img_about.setImage(img);
     }
+
 }

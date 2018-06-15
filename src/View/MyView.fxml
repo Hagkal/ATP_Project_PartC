@@ -10,6 +10,8 @@
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.effect.Reflection?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
@@ -21,6 +23,7 @@
 <?import javafx.scene.paint.Stop?>
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
+
 
 <?import View.WinDisplay?>
 <BorderPane fx:id="lyt_mainPane" onKeyPressed="#movePlayer" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1"
@@ -35,7 +38,7 @@
                                 <MenuItem fx:id="menu_inside_new" mnemonicParsing="false" onAction="#SetStageNewEvent" text="New" />
                                 <MenuItem mnemonicParsing="false" onAction="#saveGame" text="Save" />
                                 <MenuItem mnemonicParsing="false" onAction="#loadGame" text="Load" />
-                                <MenuItem mnemonicParsing="false" text="Exit" />
+                                <MenuItem fx:id="menu_inside_exit" mnemonicParsing="false" onAction="#setOnCloseRequest" text="Exit" />
                             </items>
                         </Menu>
                         <Menu mnemonicParsing="false" text="Options">
@@ -125,6 +128,7 @@
         <HBox prefHeight="19.0" BorderPane.alignment="CENTER">
             <children>
                 <Label text="Status: " />
+            <ImageView fx:id="img_music" fitHeight="40.0" fitWidth="43.0" onMouseClicked="#SetPlayPauseEvent" pickOnBounds="true" preserveRatio="true" />
             </children></HBox>
     </bottom>
     <right>
