@@ -59,7 +59,7 @@ public class MyViewController implements IView, Observer {
     public javafx.scene.image.ImageView img_music;
     public javafx.scene.control.Button btn_music;
     public javafx.scene.layout.BorderPane lyt_mainPane;
-  
+
     Media startMusic = new Media(new File("Resources/Muse.mp3").toURI().toString());
     Media winnerMusic = new Media(new File("Resources/gameover.mp3").toURI().toString());
     MediaPlayer mediaPlayerWinner = new MediaPlayer(winnerMusic);
@@ -144,8 +144,8 @@ public class MyViewController implements IView, Observer {
             //img_music.setImage(PauseButtonImage);
             btn_music.setText("Play");
         }
-      actionEvent.consume();
-}
+        actionEvent.consume();
+    }
 
     public void setOnCloseRequest(ActionEvent actionEvent) {
 
@@ -240,14 +240,11 @@ public class MyViewController implements IView, Observer {
             mediaPlayerStart.stop();
             mediaPlayerWinner.play();
 
-            if (args.contains("Paint")) {
-                winDisplay.display("Won");
-                Alert goodJob = new Alert(Alert.AlertType.INFORMATION);
-                goodJob.setContentText("NICE :)\n You Win!");
-                goodJob.showAndWait();
-            }
-            else
-                winDisplay.display("clear");
+
+            winDisplay.display("Won");
+            Alert goodJob = new Alert(Alert.AlertType.INFORMATION);
+            goodJob.setContentText("NICE :)\n You Win!");
+            goodJob.showAndWait();
         }
     }
 
@@ -299,6 +296,37 @@ public class MyViewController implements IView, Observer {
         actionEvent.consume();
     }
 
+    /**
+     * a method to set resize of the maze
+     * @param scene - the scene which the maze works on
+     */
+    public void setResizeEvent(Scene scene) {
+        scene.widthProperty().addListener(new ChangeListener<Number>() {
+            @Override
+            public void changed(ObservableValue<? extends Number> observableValue, Number oldSceneWidth, Number newSceneWidth) {
+                display();
+            }
+        });
+        scene.heightProperty().addListener(new ChangeListener<Number>() {
+            @Override
+            public void changed(ObservableValue<? extends Number> observableValue, Number oldSceneHeight, Number newSceneHeight) {
+                display();
+            }
+        });
+    }
+
+    /**
+     * a method to redisplay the entire displayers because of resize event
+     */
+    private void display() {
+        mazeDisplay.display(viewModel.getMaze());
+        solutionDisplay.display(viewModel.getMaze(), viewModel.getSolution());
+        playerDisplay.display(viewModel.getMaze(), viewModel.getPlayerRow(), viewModel.getPlayerCol());
+    }
+
+    public void setMaxMinEvent(Stage stage) {
+        stage.maximizedProperty().addListener((observable, oldValue, newValue) -> display());
+    }
 
     public void dragOver(MouseDragEvent mouseDragEvent) {
         if (viewModel.getMaze() == null)
@@ -321,33 +349,6 @@ public class MyViewController implements IView, Observer {
                 viewModel.movePlayer(KeyCode.DOWN);
         }
 
-    }
-
-
-    public void setResizeEvent(Scene scene) {
-        scene.widthProperty().addListener(new ChangeListener<Number>() {
-            @Override
-            public void changed(ObservableValue<? extends Number> observableValue, Number oldSceneWidth, Number newSceneWidth) {
-                display(newSceneWidth.doubleValue(), scene.getHeight());
-            }
-        });
-        scene.heightProperty().addListener(new ChangeListener<Number>() {
-            @Override
-            public void changed(ObservableValue<? extends Number> observableValue, Number oldSceneHeight, Number newSceneHeight) {
-                display(scene.getWidth(), newSceneHeight.doubleValue());
-            }
-        });
-    }
-
-
-    public void setMaxMinEvent(Stage stage){
-        stage.maximizedProperty().addListener((observable, oldValue, newValue) -> display(0, 0));
-    }
-
-    private void display(double width, double height) {
-        mazeDisplay.display(viewModel.getMaze());
-        solutionDisplay.display(viewModel.getMaze(), viewModel.getSolution());
-        playerDisplay.display(viewModel.getMaze(), viewModel.getPlayerRow(), viewModel.getPlayerCol());
     }
 }
 

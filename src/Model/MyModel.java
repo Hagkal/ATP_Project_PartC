@@ -225,7 +225,7 @@ public class MyModel extends Observable implements IModel {
                     && playerCol == maze.getGoalPosition().getColumnIndex())
                 solReached = true;
             setChanged();
-            notifyObservers(solReached ? "playerDisplay, WINNER, Paint" : "playerDisplay");
+            notifyObservers(solReached ? "playerDisplay, WINNER" : "playerDisplay");
         }
     }
 
@@ -287,6 +287,7 @@ public class MyModel extends Observable implements IModel {
                 maze = (Maze) gameLoader.readObject();
                 playerRow = maze.getStartPosition().getRowIndex();
                 playerCol = maze.getStartPosition().getColumnIndex();
+                solved = null;
                 solReached = false;
 
                 setChanged();

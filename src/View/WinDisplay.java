@@ -38,7 +38,6 @@ public class WinDisplay extends Display {
         gc.clearRect(0,0, getWidth(), getHeight());
 
         String s = (String) o[0];
-        if (s.contains("Won"))
         try {
             Random rand = new Random();
             int num = rand.nextInt(3);
