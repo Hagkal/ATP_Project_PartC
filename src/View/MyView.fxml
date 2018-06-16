@@ -3,6 +3,7 @@
 <?import View.MazeDisplayer?>
 <?import View.PlayerDisplay?>
 <?import View.SolutionDisplayer?>
+<?import View.WinDisplay?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
@@ -10,7 +11,6 @@
 <?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.control.TextField?>
-<?import javafx.scene.effect.Reflection?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
@@ -23,10 +23,7 @@
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 
-
-<?import View.WinDisplay?>
-<BorderPane fx:id="lyt_mainPane" onKeyPressed="#movePlayer" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="View.MyViewController">
+<BorderPane fx:id="lyt_mainPane" onKeyPressed="#movePlayer" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="View.MyViewController">
     <top>
         <VBox BorderPane.alignment="CENTER">
             <children>
@@ -102,9 +99,9 @@
         </VBox>
     </left>
     <center>
-        <Pane fx:id="pane" BorderPane.alignment="CENTER">
+        <Pane fx:id="pane" onScroll="#addMouseScrolling" BorderPane.alignment="CENTER">
             <children>
-                <Rectangle arcHeight="5.0" arcWidth="5.0" height="${pane.height}" width="${pane.width}" stroke="BLACK" strokeType="INSIDE" >
+                <Rectangle arcHeight="5.0" arcWidth="5.0" height="${pane.height}" stroke="BLACK" strokeType="INSIDE" width="${pane.width}">
                     <fill>
                         <LinearGradient endX="1.0" endY="1.0">
                             <stops>
@@ -117,7 +114,7 @@
                 <MazeDisplayer fx:id="mazeDisplay" height="${pane.height}" width="${pane.width}" />
                 <SolutionDisplayer fx:id="solutionDisplay" height="${pane.height}" width="${pane.width}" />
                 <PlayerDisplay fx:id="playerDisplay" height="${pane.height}" width="${pane.width}" />
-                <WinDisplay fx:id="winDisplay" height="${pane.height}" width="${pane.width}"/>
+                <WinDisplay fx:id="winDisplay" height="${pane.height}" width="${pane.width}" />
             </children>
          <padding>
             <Insets bottom="100.0" left="100.0" right="100.0" top="100.0" />
