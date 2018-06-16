@@ -16,7 +16,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.MouseEvent;
+import javafx.scene.input.*;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.Region;
@@ -27,12 +27,9 @@ import javafx.stage.Modality;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
-import javafx.scene.input.KeyCode;
-import javafx.scene.input.MouseDragEvent;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
-import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
 import sample.Main;
 
@@ -129,18 +126,20 @@ public class MyViewController implements IView, Observer {
 
     public void SetPlayPauseEvent(ActionEvent actionEvent) {
 
-        MediaPlayer.Status status = mediaPlayerStart.getStatus();
+        MediaPlayer.Status statusStart = mediaPlayerStart.getStatus();
+        MediaPlayer.Status statusWinner = mediaPlayerWinner.getStatus();
 
-        if (status == MediaPlayer.Status.PAUSED
-                || status == MediaPlayer.Status.READY
-                || status == MediaPlayer.Status.STOPPED) {
-
+        if (statusStart == MediaPlayer.Status.PAUSED
+                || statusStart == MediaPlayer.Status.READY
+                || statusStart == MediaPlayer.Status.STOPPED) {
+            mediaPlayerWinner.stop();
             mediaPlayerStart.play();
             //img_music.setImage(PlayButtonImage);
             btn_music.setText("Pause");
 
         } else {
             mediaPlayerStart.pause();
+            mediaPlayerWinner.stop();
             //img_music.setImage(PauseButtonImage);
             btn_music.setText("Play");
         }
@@ -161,6 +160,18 @@ public class MyViewController implements IView, Observer {
             actionEvent.consume();
         }
 
+    }
+
+    public void addMouseScrolling(ScrollEvent scrollEvent) {
+        if(scrollEvent.isControlDown()) {
+            double zoomFactor = 1.05;
+            double deltaY = scrollEvent.getDeltaY();
+            if (deltaY < 0) {
+                zoomFactor = 2.0 - zoomFactor;
+            }
+            mazeDisplay.setScaleX(mazeDisplay.getScaleX() * zoomFactor);
+            mazeDisplay.setScaleY(mazeDisplay.getScaleY() * zoomFactor);
+        }
     }
 
 
@@ -238,11 +249,11 @@ public class MyViewController implements IView, Observer {
 
             /* music for winning */
             mediaPlayerStart.stop();
+            btn_music.setText("Play");
             mediaPlayerWinner.play();
 
             if (args.contains("Paint")) {
                 winDisplay.display("Won");
-                Alert goodJob = new Alert(Alert.AlertType.INFORMATION);
                 goodJob.setContentText("NICE :)\n You Win!");
                 goodJob.showAndWait();
             }
