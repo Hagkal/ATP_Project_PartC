@@ -79,7 +79,7 @@ public class MyViewController implements IView, Observer {
             stage.setTitle("About");
             FXMLLoader fxmlLoader = new FXMLLoader();
             Parent root = fxmlLoader.load(getClass().getResource("About.fxml").openStream());
-            Scene scene = new Scene(root, 800, 550);
+            Scene scene = new Scene(root, 800, 450);
             scene.getStylesheets().add(getClass().getResource("About.css").toExternalForm());
             stage.setScene(scene);
             AboutController a = fxmlLoader.getController();
@@ -123,7 +123,7 @@ public class MyViewController implements IView, Observer {
             stage.setTitle("Properties");
             FXMLLoader fxmlLoader = new FXMLLoader();
             Parent root = fxmlLoader.load(getClass().getResource("Properties.fxml").openStream());
-            Scene scene = new Scene(root, 800, 550);
+            Scene scene = new Scene(root, 600, 400);
             scene.getStylesheets().add(getClass().getResource("Properties.css").toExternalForm());
             stage.setScene(scene);
             PropertiesController a = fxmlLoader.getController();
@@ -143,7 +143,6 @@ public class MyViewController implements IView, Observer {
         actionEvent.consume();
     }
 
-
     /**
      * a method to play/pause the background music
      * @param actionEvent - pressing the proper button
@@ -153,10 +152,9 @@ public class MyViewController implements IView, Observer {
         MediaPlayer.Status statusStart = mediaPlayerStart.getStatus();
         MediaPlayer.Status statusWinner = mediaPlayerWinner.getStatus();
 
-        if (statusWinner == MediaPlayer.Status.STOPPED){
-            if (statusStart == MediaPlayer.Status.PAUSED
-                    || statusStart == MediaPlayer.Status.READY
-                    || statusStart == MediaPlayer.Status.STOPPED) {
+        if (statusStart == MediaPlayer.Status.PLAYING
+                || statusStart == MediaPlayer.Status.PAUSED){
+            if (statusStart == MediaPlayer.Status.PAUSED) {
                 mediaPlayerWinner.stop();
                 mediaPlayerStart.play();
                 //img_music.setImage(PlayButtonImage);
