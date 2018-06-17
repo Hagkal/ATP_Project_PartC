@@ -317,6 +317,10 @@ public class MyViewController implements IView, Observer {
      */
     private void popProblem(String description) {
         Alert prob = new Alert(Alert.AlertType.ERROR);
+        DialogPane dialogPane = prob.getDialogPane();
+        dialogPane.getStylesheets().add(getClass().getResource("ViewStyle.css").toExternalForm());
+        dialogPane.getStyleClass().add("myDialog");
+
         prob.setContentText(description);
         prob.showAndWait();
     }
@@ -375,8 +379,6 @@ public class MyViewController implements IView, Observer {
         playerDisplay.display(viewModel.getMaze(), viewModel.getPlayerRow(), viewModel.getPlayerCol());
     }
 
-
-
     public void setMaxMinEvent(Stage stage) {
         stage.maximizedProperty().addListener((observable, oldValue, newValue) -> display());
     }
@@ -404,6 +406,10 @@ public class MyViewController implements IView, Observer {
 
     }
 
+    /**
+     * a method to set events of the resize
+     * @param scene - the scene of the displayers
+     */
     public void setResizeEvent(Scene scene) {
         scene.widthProperty().addListener(new ChangeListener<Number>() {
             @Override
@@ -419,15 +425,26 @@ public class MyViewController implements IView, Observer {
         });
     }
 
+    /**
+     * a method to active restart button
+     * @param actionEvent - a click event
+     */
     public void restartMaze(ActionEvent actionEvent) {
-        viewModel.restartMaze();
+
         mediaPlayerWinner.stop();
-        mediaPlayerStart.play();
         mediaPlayerStart.pause();
 
         if (btn_music.getText().equals("Pause")){
             mediaPlayerStart.play();
         }
+        else if (btn_music.getText().equals("Play")){
+            mediaPlayerStart.pause();
+            btn_music.setText("Play");
+        }
+
+        viewModel.restartMaze();
+
+        actionEvent.consume();
 
     }
 }
