@@ -29,6 +29,7 @@ public class MazeDisplayer extends Display {
         try {
             Image wallImage = new Image("file:Resources/wall.jpg");
             Image wayImage = new Image("file:Resources/way.jpg");
+            Image finishSpot = new Image("file:Resources/goalcup.jpg");
 
             GraphicsContext gc = getGraphicsContext2D();
             gc.clearRect(0, 0, getWidth(), getHeight());
@@ -49,8 +50,7 @@ public class MazeDisplayer extends Display {
 
             // draw finish position
             //gc.setFill(Color.GOLD);
-            Image goalCharacter = new Image("file:Resources/dest.jpg");
-            gc.drawImage(goalCharacter, m.getGoalPosition().getColumnIndex() * cellWidth, m.getGoalPosition().getRowIndex() * cellHeight ,cellWidth , cellHeight);
+            gc.drawImage(finishSpot, m.getGoalPosition().getColumnIndex() * cellWidth, m.getGoalPosition().getRowIndex() * cellHeight ,cellWidth , cellHeight);
             //gc.fillRect(m.getGoalPosition().getColumnIndex()*cellWidth,
                     //m.getGoalPosition().getRowIndex()*cellHeight,
                     //cellWidth, cellHeight);

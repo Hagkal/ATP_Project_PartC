@@ -84,6 +84,7 @@ public class MyViewController implements IView, Observer {
             stage.setScene(scene);
             AboutController a = fxmlLoader.getController();
             stage.initModality(Modality.APPLICATION_MODAL); //Lock the window until it closes
+            stage.setResizable(false);
             stage.show();
         } catch (Exception e) {
 
@@ -106,6 +107,7 @@ public class MyViewController implements IView, Observer {
             stage.setScene(scene);
             HelpController a = fxmlLoader.getController();
             stage.initModality(Modality.APPLICATION_MODAL); //Lock the window until it closes
+            stage.setResizable(false);
             stage.show();
         } catch (Exception e) {
 
@@ -128,6 +130,7 @@ public class MyViewController implements IView, Observer {
             stage.setScene(scene);
             PropertiesController a = fxmlLoader.getController();
             stage.initModality(Modality.APPLICATION_MODAL); //Lock the window until it closes
+            stage.setResizable(false);
             stage.show();
         } catch (Exception e) {
 
@@ -418,9 +421,14 @@ public class MyViewController implements IView, Observer {
 
     public void restartMaze(ActionEvent actionEvent) {
         viewModel.restartMaze();
-
         mediaPlayerWinner.stop();
         mediaPlayerStart.play();
+        mediaPlayerStart.pause();
+
+        if (btn_music.getText().equals("Pause")){
+            mediaPlayerStart.play();
+        }
+
     }
 }
 

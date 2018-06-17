@@ -5,6 +5,7 @@ import algorithms.search.AState;
 import algorithms.search.MazeState;
 import algorithms.search.Solution;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 
 public class SolutionDisplayer extends Display {
@@ -13,7 +14,7 @@ public class SolutionDisplayer extends Display {
     public void display(Object... o){
         GraphicsContext gc = getGraphicsContext2D();
         gc.clearRect(0, 0, getWidth(), getHeight());
-        gc.setFill(Color.RED);
+        Image solImage = new Image("file:Resources/dest.jpg");
 
         if (o[1] == null || !(o[1] instanceof Solution) || !(o[0] instanceof Maze))
             return;
@@ -36,7 +37,7 @@ public class SolutionDisplayer extends Display {
                 return;
             int colorRow = mState.getCurrentPosition().getRowIndex();
             int colorCol = mState.getCurrentPosition().getColumnIndex();
-            gc.fillRect(colorCol * cellWidth, colorRow * cellHeight, cellWidth, cellHeight);
+            gc.drawImage(solImage,colorCol * cellWidth, colorRow * cellHeight, cellWidth, cellHeight);
 
 
         }
