@@ -53,6 +53,7 @@ public class MyViewController implements IView, Observer {
     public javafx.scene.control.TextField txt_colsFromUser;
     public javafx.scene.control.Button btn_generateButton;
     public javafx.scene.control.Button btn_solveButton;
+    public javafx.scene.control.Button btn_restart;
     public javafx.scene.control.Label lbl_playerRow;
     public javafx.scene.control.Label lbl_playerCol;
     public javafx.scene.image.ImageView img_music;
@@ -66,6 +67,11 @@ public class MyViewController implements IView, Observer {
     Image PlayButtonImage = new Image("file:Resources/play.jpg");
     Image PauseButtonImage = new Image("file:Resources/stop.jpg");
 
+
+    /**
+     * a method to take care of the About in the menu
+     * @param actionEvent - about being pressed
+     */
     public void SetStageAboutEvent(ActionEvent actionEvent) {
 
         try {
@@ -84,6 +90,10 @@ public class MyViewController implements IView, Observer {
         }
     }
 
+    /**
+     * a method to take care of the Help in the menu
+     * @param actionEvent - about being pressed
+     */
     public void SetStageHelpEvent(ActionEvent actionEvent) {
 
         try {
@@ -102,6 +112,10 @@ public class MyViewController implements IView, Observer {
         }
     }
 
+    /**
+     * managing the properties method
+     * @param actionEvent - properties being presseds
+     */
     public void SetStagePropertiesEvent(ActionEvent actionEvent) {
 
         try {
@@ -120,34 +134,62 @@ public class MyViewController implements IView, Observer {
         }
     }
 
+    /**
+     * generate a new maze button pressed
+     * @param actionEvent - new maze evet
+     */
     public void SetStageNewEvent(ActionEvent actionEvent) {
         generateMaze();
         actionEvent.consume();
     }
 
 
+    /**
+     * a method to play/pause the background music
+     * @param actionEvent - pressing the proper button
+     */
     public void SetPlayPauseEvent(ActionEvent actionEvent) {
 
         MediaPlayer.Status statusStart = mediaPlayerStart.getStatus();
         MediaPlayer.Status statusWinner = mediaPlayerWinner.getStatus();
 
-        if (statusStart == MediaPlayer.Status.PAUSED
-                || statusStart == MediaPlayer.Status.READY
-                || statusStart == MediaPlayer.Status.STOPPED) {
-            mediaPlayerWinner.stop();
-            mediaPlayerStart.play();
-            //img_music.setImage(PlayButtonImage);
-            btn_music.setText("Pause");
+        if (statusWinner == MediaPlayer.Status.STOPPED){
+            if (statusStart == MediaPlayer.Status.PAUSED
+                    || statusStart == MediaPlayer.Status.READY
+                    || statusStart == MediaPlayer.Status.STOPPED) {
+                mediaPlayerWinner.stop();
+                mediaPlayerStart.play();
+                //img_music.setImage(PlayButtonImage);
+                btn_music.setText("Pause");
 
-        } else {
-            mediaPlayerStart.pause();
-            mediaPlayerWinner.stop();
-            //img_music.setImage(PauseButtonImage);
-            btn_music.setText("Play");
+            } else {
+                mediaPlayerStart.pause();
+                mediaPlayerWinner.stop();
+                //img_music.setImage(PauseButtonImage);
+                btn_music.setText("Play");
+            }
         }
+        else {
+            if (statusWinner == MediaPlayer.Status.PLAYING
+                    || statusWinner == MediaPlayer.Status.READY){
+                mediaPlayerWinner.pause();
+                btn_music.setText("Play");
+            }
+
+            else{
+                mediaPlayerWinner.play();
+                btn_music.setText("Pause");
+            }
+
+        }
+
         actionEvent.consume();
     }
 
+    /**
+     * a method to properly exit the game on menu request
+     * @param actionEvent - the event of closing the game from the menu
+     */
     public void setOnCloseRequest(ActionEvent actionEvent) {
 
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
@@ -164,6 +206,10 @@ public class MyViewController implements IView, Observer {
 
     }
 
+    /**
+     * a method to set the size of the maze during scrolling with CTRL button pressed
+     * @param scrollEvent - a scrolling event
+     */
     public void addMouseScrolling(ScrollEvent scrollEvent) {
         if(scrollEvent.isControlDown()) {
             double zoomFactor = 1.05;
@@ -173,9 +219,12 @@ public class MyViewController implements IView, Observer {
             }
             mazeDisplay.setScaleX(mazeDisplay.getScaleX() * zoomFactor);
             mazeDisplay.setScaleY(mazeDisplay.getScaleY() * zoomFactor);
+            playerDisplay.setScaleX(playerDisplay.getScaleX() * zoomFactor);
+            playerDisplay.setScaleY(playerDisplay.getScaleY() * zoomFactor);
+            solutionDisplay.setScaleX(solutionDisplay.getScaleX() * zoomFactor);
+            solutionDisplay.setScaleY(solutionDisplay.getScaleY() * zoomFactor);
         }
     }
-
 
     /**
      * a method to set the ViewModel of the application
@@ -210,7 +259,8 @@ public class MyViewController implements IView, Observer {
             viewModel.generateMaze(row, col);
             btn_generateButton.setDisable(false);
             btn_solveButton.setDisable(false);
-            /** Background music **/
+            btn_restart.setDisable(false);
+
             //img_music.setImage(PlayButtonImage);
             btn_music.setText("Pause");
             mediaPlayerWinner.stop();
@@ -251,14 +301,11 @@ public class MyViewController implements IView, Observer {
 
             /* music for winning */
             mediaPlayerStart.stop();
-            btn_music.setText("Play");
+            btn_music.setText("Pause");
             mediaPlayerWinner.play();
 
 
             winDisplay.display("Won");
-            Alert goodJob = new Alert(Alert.AlertType.INFORMATION);
-            goodJob.setContentText("NICE :)\n You Win!");
-            goodJob.showAndWait();
         }
     }
 
@@ -305,8 +352,16 @@ public class MyViewController implements IView, Observer {
      * a method to load a previously saved game
      */
     public void loadGame(ActionEvent actionEvent) {
-        if (viewModel.loadGame())
+        if (viewModel.loadGame()){
             btn_solveButton.setDisable(false);
+            btn_restart.setDisable(false);
+
+            mediaPlayerWinner.stop();
+            mediaPlayerStart.play();
+            btn_music.setText("Pause");
+        }
+
+
         actionEvent.consume();
     }
 
@@ -318,6 +373,8 @@ public class MyViewController implements IView, Observer {
         solutionDisplay.display(viewModel.getMaze(), viewModel.getSolution());
         playerDisplay.display(viewModel.getMaze(), viewModel.getPlayerRow(), viewModel.getPlayerCol());
     }
+
+
 
     public void setMaxMinEvent(Stage stage) {
         stage.maximizedProperty().addListener((observable, oldValue, newValue) -> display());
@@ -346,27 +403,26 @@ public class MyViewController implements IView, Observer {
 
     }
 
-
     public void setResizeEvent(Scene scene) {
         scene.widthProperty().addListener(new ChangeListener<Number>() {
             @Override
             public void changed(ObservableValue<? extends Number> observableValue, Number oldSceneWidth, Number newSceneWidth) {
-                display(newSceneWidth.doubleValue(), scene.getHeight());
+                display();
             }
         });
         scene.heightProperty().addListener(new ChangeListener<Number>() {
             @Override
             public void changed(ObservableValue<? extends Number> observableValue, Number oldSceneHeight, Number newSceneHeight) {
-                display(scene.getWidth(), newSceneHeight.doubleValue());
+                display();
             }
         });
     }
 
+    public void restartMaze(ActionEvent actionEvent) {
+        viewModel.restartMaze();
 
-    private void display(double width, double height) {
-        mazeDisplay.display(viewModel.getMaze());
-        solutionDisplay.display(viewModel.getMaze(), viewModel.getSolution());
-        playerDisplay.display(viewModel.getMaze(), viewModel.getPlayerRow(), viewModel.getPlayerCol());
+        mediaPlayerWinner.stop();
+        mediaPlayerStart.play();
     }
 }
 

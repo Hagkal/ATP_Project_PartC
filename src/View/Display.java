@@ -4,8 +4,6 @@ import javafx.scene.canvas.Canvas;
 
 public class Display extends Canvas {
 
-    double height;
-    double width;
     static double cellWidth;
     static double cellHeight;
 

@@ -48,4 +48,6 @@ public interface IModel {
     int getPlayerCol();
 
     void dragPlayer();
+
+    void restartMaze();
 }

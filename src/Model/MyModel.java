@@ -310,4 +310,19 @@ public class MyModel extends Observable implements IModel {
     public void dragPlayer() {
 
     }
+
+    @Override
+    public void restartMaze() {
+        if (maze==null)
+            return;
+
+        playerRow = maze.getStartPosition().getRowIndex();
+        playerCol = maze.getStartPosition().getColumnIndex();
+        solved = null;
+        solReached = false;
+
+
+        setChanged();
+        notifyObservers("mazeDisplay, playerDisplay, solutionDisplay");
+    }
 }

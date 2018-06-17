@@ -107,4 +107,8 @@ public class MyViewModel extends Observable implements Observer {
     public void dragOver() {
         model.dragPlayer();
     }
+
+    public void restartMaze() {
+        model.restartMaze();
+    }
 }
