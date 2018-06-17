@@ -16,7 +16,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.MouseEvent;
+import javafx.scene.input.*;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.Region;
@@ -32,7 +32,6 @@ import javafx.scene.input.MouseDragEvent;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
-import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
 import sample.Main;
 
@@ -59,7 +58,7 @@ public class MyViewController implements IView, Observer {
     public javafx.scene.image.ImageView img_music;
     public javafx.scene.control.Button btn_music;
     public javafx.scene.layout.BorderPane lyt_mainPane;
-
+  
     Media startMusic = new Media(new File("Resources/Muse.mp3").toURI().toString());
     Media winnerMusic = new Media(new File("Resources/gameover.mp3").toURI().toString());
     MediaPlayer mediaPlayerWinner = new MediaPlayer(winnerMusic);
@@ -129,18 +128,20 @@ public class MyViewController implements IView, Observer {
 
     public void SetPlayPauseEvent(ActionEvent actionEvent) {
 
-        MediaPlayer.Status status = mediaPlayerStart.getStatus();
+        MediaPlayer.Status statusStart = mediaPlayerStart.getStatus();
+        MediaPlayer.Status statusWinner = mediaPlayerWinner.getStatus();
 
-        if (status == MediaPlayer.Status.PAUSED
-                || status == MediaPlayer.Status.READY
-                || status == MediaPlayer.Status.STOPPED) {
-
+        if (statusStart == MediaPlayer.Status.PAUSED
+                || statusStart == MediaPlayer.Status.READY
+                || statusStart == MediaPlayer.Status.STOPPED) {
+            mediaPlayerWinner.stop();
             mediaPlayerStart.play();
             //img_music.setImage(PlayButtonImage);
             btn_music.setText("Pause");
 
         } else {
             mediaPlayerStart.pause();
+            mediaPlayerWinner.stop();
             //img_music.setImage(PauseButtonImage);
             btn_music.setText("Play");
         }
@@ -161,6 +162,18 @@ public class MyViewController implements IView, Observer {
             actionEvent.consume();
         }
 
+    }
+
+    public void addMouseScrolling(ScrollEvent scrollEvent) {
+        if(scrollEvent.isControlDown()) {
+            double zoomFactor = 1.05;
+            double deltaY = scrollEvent.getDeltaY();
+            if (deltaY < 0) {
+                zoomFactor = 2.0 - zoomFactor;
+            }
+            mazeDisplay.setScaleX(mazeDisplay.getScaleX() * zoomFactor);
+            mazeDisplay.setScaleY(mazeDisplay.getScaleY() * zoomFactor);
+        }
     }
 
 
@@ -238,6 +251,7 @@ public class MyViewController implements IView, Observer {
 
             /* music for winning */
             mediaPlayerStart.stop();
+            btn_music.setText("Play");
             mediaPlayerWinner.play();
 
 
@@ -297,25 +311,6 @@ public class MyViewController implements IView, Observer {
     }
 
     /**
-     * a method to set resize of the maze
-     * @param scene - the scene which the maze works on
-     */
-    public void setResizeEvent(Scene scene) {
-        scene.widthProperty().addListener(new ChangeListener<Number>() {
-            @Override
-            public void changed(ObservableValue<? extends Number> observableValue, Number oldSceneWidth, Number newSceneWidth) {
-                display();
-            }
-        });
-        scene.heightProperty().addListener(new ChangeListener<Number>() {
-            @Override
-            public void changed(ObservableValue<? extends Number> observableValue, Number oldSceneHeight, Number newSceneHeight) {
-                display();
-            }
-        });
-    }
-
-    /**
      * a method to redisplay the entire displayers because of resize event
      */
     private void display() {
@@ -349,6 +344,29 @@ public class MyViewController implements IView, Observer {
                 viewModel.movePlayer(KeyCode.DOWN);
         }
 
+    }
+
+
+    public void setResizeEvent(Scene scene) {
+        scene.widthProperty().addListener(new ChangeListener<Number>() {
+            @Override
+            public void changed(ObservableValue<? extends Number> observableValue, Number oldSceneWidth, Number newSceneWidth) {
+                display(newSceneWidth.doubleValue(), scene.getHeight());
+            }
+        });
+        scene.heightProperty().addListener(new ChangeListener<Number>() {
+            @Override
+            public void changed(ObservableValue<? extends Number> observableValue, Number oldSceneHeight, Number newSceneHeight) {
+                display(scene.getWidth(), newSceneHeight.doubleValue());
+            }
+        });
+    }
+
+
+    private void display(double width, double height) {
+        mazeDisplay.display(viewModel.getMaze());
+        solutionDisplay.display(viewModel.getMaze(), viewModel.getSolution());
+        playerDisplay.display(viewModel.getMaze(), viewModel.getPlayerRow(), viewModel.getPlayerCol());
     }
 }
 
